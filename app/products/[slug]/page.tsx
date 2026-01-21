@@ -1,39 +1,28 @@
 // =============================================================================
-// FICHIER : app/products/[slug]/page.tsx
-// RÔLE : Page de détail d'un produit (URL: /products/lookze-pro)
+// FICHIER : app/products/[slug]/page. tsx
+// RÔLE :  Page de détail d'un produit (URL:  /products/lookze-pro)
 // CRITICITÉ : ⚠️ HAUTE - Page de conversion (achat)
-// =============================================================================
-//
-// 🎓 LEÇON : Route dynamique [slug]
-//
-// Le dossier [slug] est spécial dans Next.js :
-// - [slug] capture la valeur dans l'URL
-// - /products/lookze-pro → slug = "lookze-pro"
-// - /products/autre-template → slug = "autre-template"
-//
-// La fonction reçoit { params } avec la valeur capturée
-//
+// MODIFIÉ :  Ajout du bouton démo intégré
 // =============================================================================
 
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAllProducts, getProductBySlug, formatPrice } from "@/lib/products";
 import { AddToCartButton } from "./AddToCartButton";
+import { DemoModal } from "./DemoModal";
 
 // -----------------------------------------------------------------------------
-// GÉNÉRATION STATIQUE : Pré-génère les pages pour chaque produit
-// Améliore le SEO et les performances (pages générées au build)
+// GÉNÉRATION STATIQUE
 // -----------------------------------------------------------------------------
 export async function generateStaticParams() {
   const products = getAllProducts();
-
   return products.map((product) => ({
-    slug: product. slug,
+    slug: product.slug,
   }));
 }
 
 // -----------------------------------------------------------------------------
-// MÉTADONNÉES SEO DYNAMIQUES : Générées pour chaque produit
+// MÉTADONNÉES SEO DYNAMIQUES
 // -----------------------------------------------------------------------------
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -44,9 +33,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const product = getProductBySlug(slug);
 
   if (!product) {
-    return {
-      title: "Produit non trouvé",
-    };
+    return { title: "Produit non trouvé" };
   }
 
   return {
@@ -56,7 +43,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     openGraph: {
       title: product.seo.title,
       description: product.seo.description,
-      images: [product.images. thumbnail],
+      images: [product.images.thumbnail],
     },
   };
 }
@@ -68,7 +55,6 @@ export default async function ProductPage({ params }: PageProps) {
   const { slug } = await params;
   const product = getProductBySlug(slug);
 
-  // Si le produit n'existe pas, affiche une page 404
   if (!product) {
     notFound();
   }
@@ -76,7 +62,7 @@ export default async function ProductPage({ params }: PageProps) {
   return (
     <div className="min-h-screen bg-white">
       {/* ================================================================= */}
-      {/* SECTION PRINCIPALE :  Image + Infos */}
+      {/* SECTION PRINCIPALE : Image + Infos */}
       {/* ================================================================= */}
       <section className="py-12 sm:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -116,7 +102,7 @@ export default async function ProductPage({ params }: PageProps) {
 
               {/* Galerie miniatures */}
               <div className="mt-4 grid grid-cols-3 gap-4">
-                {[1, 2, 3].map((index) => (
+                {[1, 2, 3]. map((index) => (
                   <div
                     key={index}
                     className="aspect-video bg-zinc-100 rounded-lg overflow-hidden cursor-pointer hover:ring-2 hover:ring-blue-500 transition-all"
@@ -150,7 +136,7 @@ export default async function ProductPage({ params }: PageProps) {
 
               {/* Technologies */}
               <div className="mt-6 flex flex-wrap gap-2">
-                {product.technologies. map((tech) => (
+                {product.technologies.map((tech) => (
                   <span
                     key={tech}
                     className="px-3 py-1 bg-zinc-100 text-zinc-700 text-sm font-medium rounded-full"
@@ -172,20 +158,15 @@ export default async function ProductPage({ params }: PageProps) {
                   Paiement unique · Accès à vie · Mises à jour incluses
                 </p>
 
-                {/* Boutons d'action */}
+                {/* ========================================================= */}
+                {/* BOUTONS D'ACTION :  Panier + Démo */}
+                {/* ========================================================= */}
                 <div className="mt-6 flex flex-col sm:flex-row gap-4">
-                  {/* Bouton Ajouter au panier - Composant Client */}
+                  {/* Bouton Ajouter au panier */}
                   <AddToCartButton product={product} />
 
-                  {/* Bouton Démo */}
-                  <a
-                    href={product.demoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1 inline-flex items-center justify-center px-6 py-3 border-2 border-zinc-300 text-zinc-700 font-medium rounded-lg hover:border-zinc-400 hover:bg-zinc-50 transition-colors"
-                  >
-                    Voir la démo live →
-                  </a>
+                  {/* Bouton Démo - NOUVEAU COMPOSANT */}
+                  <DemoModal productName={product.name} />
                 </div>
               </div>
 
@@ -206,7 +187,7 @@ export default async function ProductPage({ params }: PageProps) {
                 <div className="flex items-center gap-3 p-4 bg-zinc-50 rounded-xl">
                   <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
                     <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-2 0c0 .993-.241 1.929-.668 2.754l-1.524-1.525a3.997 3.997 0 00.078-2.183l1.562-1.562C15.802 8.249 16 9.1 16 10zm-5.165 3.913l1.58 1.58A5.98 5.98 0 0110 16a5.976 5.976 0 01-2.516-.552l1.562-1.562a4.006 4.006 0 001.789.027zm-4.677-2.796a4.002 4.002 0 01-. 041-2.08l-. 08.08-1.53-1.533A5.98 5.98 0 004 10c0 .954.223 1.856.619 2.657l1.54-1.54zm1.088-6.45A5.974 5.974 0 0110 4c. 954 0 1.856.223 2.657.619l-1.54 1.54a4.002 4.002 0 00-2.346.033L7.246 4.668zM12 10a2 2 0 11-4 0 2 2 0 014 0z" clipRule="evenodd" />
+                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-2 0c0 .993-.241 1.929-.668 2.754l-1.524-1.525a3.997 3.997 0 00.078-2.183l1.562-1.562C15.802 8.249 16 9.1 16 10zm-5.165 3.913l1.58 1.58A5.98 5.98 0 0110 16a5.976 5.976 0 01-2.516-. 552l1.562-1.562a4.006 4.006 0 001.789. 027zm-4.677-2.796a4.002 4.002 0 01-.041-2.08l-. 08.08-1.53-1.533A5.98 5.98 0 004 10c0 .954.223 1.856.619 2.657l1.54-1.54zm1.088-6.45A5.974 5.974 0 0110 4c. 954 0 1.856.223 2.657.619l-1.54 1.54a4.002 4.002 0 00-2.346.033L7.246 4.668zM12 10a2 2 0 11-4 0 2 2 0 014 0z" clipRule="evenodd" />
                     </svg>
                   </div>
                   <div>
@@ -288,7 +269,6 @@ export default async function ProductPage({ params }: PageProps) {
             Description
           </h2>
 
-          {/* Rendu simple du texte (tu peux ajouter un parser Markdown plus tard) */}
           <div className="prose prose-zinc max-w-none">
             {product.longDescription. split("\n").map((paragraph, index) => {
               if (paragraph.startsWith("# ")) {
@@ -301,7 +281,7 @@ export default async function ProductPage({ params }: PageProps) {
               if (paragraph.startsWith("## ")) {
                 return (
                   <h3 key={index} className="text-xl font-semibold mt-6 mb-3">
-                    {paragraph. replace("## ", "")}
+                    {paragraph.replace("## ", "")}
                   </h3>
                 );
               }
