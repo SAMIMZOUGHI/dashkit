@@ -61,7 +61,7 @@ Accès à vie aux mises à jour futures du template.
     technologies: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
 
     // ⚠️ À REMPLACER par ton vrai Price ID Stripe (Phase 5)
-    stripePriceId: "price_XXXXXXXXXXXXXXXX",
+    stripePriceId: "price_1Ss9VnGUPJVKIAR18zB05e8k",
 
     downloadFile: "https://storage.dashkit.online/downloads/lookze-pro-v1.zip",
 
