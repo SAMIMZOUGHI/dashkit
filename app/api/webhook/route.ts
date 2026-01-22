@@ -98,7 +98,7 @@ export async function POST(request: NextRequest) {
     // =========================================================================
     // ÉVÉNEMENT : Paiement échoué
     // =========================================================================
-    case "checkout.session. expired": {
+    case "checkout.session.expired": {
       const session = event.data.object as Stripe.Checkout.Session;
       console.log("⏰ Session expirée :", session.id);
       break;
