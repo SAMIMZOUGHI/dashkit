@@ -43,26 +43,42 @@ export async function POST(request: NextRequest) {
     case "checkout.session.completed": {
       const session = event.data.object as Stripe.Checkout.Session;
 
+      // Récupère l'email (customer_details est plus fiable)
+      const customerEmail = session.customer_details?.email || session.customer_email;
+      const customerName = session.customer_details?.name || undefined;
+
       console.log("✅ Paiement réussi !");
-      console.log("   Email client :", session.customer_email);
+      console.log("   Email client :", customerEmail);
+      console.log("   Nom client :", customerName);
       console.log("   Session ID :", session.id);
 
       // Récupérer les produits achetés
       const productSlugs = session.metadata?.productSlugs?.split(",") || [];
+      console.log("   Produits :", productSlugs);
 
       // Envoyer un email pour chaque produit
       for (const slug of productSlugs) {
         const product = getProductBySlug(slug);
-        
-        if (product && session.customer_email) {
+
+        if (product && customerEmail) {
           console.log(`   📦 Envoi email pour : ${product.name}`);
 
-          await sendPurchaseEmail({
-            to: session.customer_email,
+          const result = await sendPurchaseEmail({
+            to: customerEmail,
+            customerName: customerName,
             productName: product.name,
             downloadUrl: product.downloadFile,
             orderReference: session.id.slice(-8).toUpperCase(),
           });
+
+          if (result.success) {
+            console.log(`   ✅ Email envoyé à ${customerEmail}`);
+          } else {
+            console.error(`   ❌ Erreur envoi email:`, result.error);
+          }
+        } else {
+          console.log(`   ⚠️ Produit non trouvé ou email manquant`);
+          console.log(`      slug: ${slug}, email: ${customerEmail}`);
         }
       }
 
