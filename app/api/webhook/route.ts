@@ -6,7 +6,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 import { sendPurchaseEmail } from "@/lib/email";
-import { createOrder, getProductBySlug } from "@/lib/db";
+import { createOrder, getProductBySlugFromDB } from "@/lib/db";
 import Stripe from "stripe";
 
 export const runtime = "nodejs";
@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
       const orderItems = [];
 
       for (const slug of productSlugs) {
-        const product = await getProductBySlug(slug);
+        const product = await getProductBySlugFromDB(slug);
 
         if (product) {
           orderItems.push({
