@@ -1,12 +1,12 @@
 // =============================================================================
 // FICHIER : app/api/webhook/route.ts
-// RÔLE : Recevoir les événements Stripe et envoyer les emails
+// RÔLE : Recevoir les événements Stripe et sauvegarder en DB
 // =============================================================================
 
 import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
-import { getProductBySlug } from "@/lib/products";
 import { sendPurchaseEmail } from "@/lib/email";
+import { createOrder, getProductBySlug } from "@/lib/db";
 import Stripe from "stripe";
 
 export const runtime = "nodejs";
@@ -17,10 +17,7 @@ export async function POST(request: NextRequest) {
 
   if (!signature) {
     console.error("❌ Webhook : Signature manquante");
-    return NextResponse.json(
-      { error: "Signature manquante" },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "Signature manquante" }, { status: 400 });
   }
 
   let event: Stripe.Event;
@@ -33,52 +30,64 @@ export async function POST(request: NextRequest) {
     );
   } catch (err) {
     console.error("❌ Webhook : Signature invalide", err);
-    return NextResponse.json(
-      { error: "Signature invalide" },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "Signature invalide" }, { status: 400 });
   }
 
   switch (event.type) {
     case "checkout.session.completed": {
       const session = event.data.object as Stripe.Checkout.Session;
 
-      // Récupère l'email (customer_details est plus fiable)
-      const customerEmail = session.customer_details?.email || session.customer_email;
+      const customerEmail =
+        session.customer_details?.email || session.customer_email;
       const customerName = session.customer_details?.name || undefined;
 
       console.log("✅ Paiement réussi !");
       console.log("   Email client :", customerEmail);
-      console.log("   Nom client :", customerName);
-      console.log("   Session ID :", session.id);
 
-      // Récupérer les produits achetés
       const productSlugs = session.metadata?.productSlugs?.split(",") || [];
-      console.log("   Produits :", productSlugs);
 
-      // Envoyer un email pour chaque produit
+      // Prépare les items pour la commande
+      const orderItems = [];
+
       for (const slug of productSlugs) {
-        const product = getProductBySlug(slug);
+        const product = await getProductBySlug(slug);
 
-        if (product && customerEmail) {
-          console.log(`   📦 Envoi email pour : ${product.name}`);
-
-          const result = await sendPurchaseEmail({
-            to: customerEmail,
-            customerName: customerName,
+        if (product) {
+          orderItems.push({
+            productId: product.id,
+            productSlug: product.slug,
             productName: product.name,
-            downloadUrl: product.downloadFile,
-            orderReference: session.id.slice(-8).toUpperCase(),
+            price: product.price,
+            quantity: 1,
           });
 
-          if (result.success) {
+          // Envoie l'email
+          if (customerEmail) {
+            await sendPurchaseEmail({
+              to: customerEmail,
+              customerName: customerName,
+              productName: product.name,
+              downloadUrl: product.download_file || "",
+              orderReference: session.id.slice(-8).toUpperCase(),
+            });
             console.log(`   ✅ Email envoyé à ${customerEmail}`);
-          } else {
-            console.error(`   ❌ Erreur envoi email:`, result.error);
           }
-        } else {
-          console.log(`   ⚠️ Produit non trouvé ou email manquant`);
-          console.log(`      slug: ${slug}, email: ${customerEmail}`);
+        }
+      }
+
+      // Sauvegarde la commande en base
+      if (customerEmail && orderItems.length > 0) {
+        const order = await createOrder({
+          stripeSessionId: session.id,
+          customerEmail,
+          customerName,
+          totalAmount: session.amount_total || 0,
+          currency: session.currency?.toUpperCase() || "EUR",
+          items: orderItems,
+        });
+
+        if (order) {
+          console.log("   💾 Commande sauvegardée :", order.id);
         }
       }
 
