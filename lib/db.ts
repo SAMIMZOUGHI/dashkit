@@ -4,13 +4,82 @@
 // =============================================================================
 
 import { supabaseAdmin } from "./supabase";
-import { Product, Order, OrderItem, Customer } from "@/types/supabase";
+
+// =============================================================================
+// TYPES
+// =============================================================================
+
+export type Product = {
+  id: string;
+  slug: string;
+  name: string;
+  short_description: string | null;
+  long_description: string | null;
+  price: number;
+  currency: string;
+  category: string | null;
+  tags: string[] | null;
+  download_file: string | null;
+  demo_url: string | null;
+  images: Record<string, unknown>;
+  features: Record<string, unknown>[];
+  tech_stack: string[] | null;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+export type Customer = {
+  id: string;
+  email: string;
+  name: string | null;
+  stripe_customer_id: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type Order = {
+  id: string;
+  customer_id: string | null;
+  stripe_session_id: string | null;
+  stripe_payment_intent: string | null;
+  status: string;
+  total_amount: number;
+  currency: string;
+  customer_email: string | null;
+  customer_name: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type OrderItem = {
+  id: string;
+  order_id: string | null;
+  product_id: string | null;
+  product_slug: string | null;
+  product_name: string | null;
+  price: number;
+  quantity: number;
+  created_at: string;
+};
+
+export type Download = {
+  id: string;
+  order_id: string | null;
+  product_id: string | null;
+  customer_email: string | null;
+  download_token: string | null;
+  download_count: number;
+  max_downloads: number;
+  expires_at: string | null;
+  created_at: string;
+};
 
 // =============================================================================
 // PRODUCTS
 // =============================================================================
 
-export async function getAllProducts(): Promise<Product[]> {
+export async function getAllProductsFromDB(): Promise<Product[]> {
   const { data, error } = await supabaseAdmin
     .from("products")
     .select("*")
@@ -22,10 +91,10 @@ export async function getAllProducts(): Promise<Product[]> {
     return [];
   }
 
-  return data || [];
+  return (data as Product[]) || [];
 }
 
-export async function getProductBySlug(slug: string): Promise<Product | null> {
+export async function getProductBySlugFromDB(slug: string): Promise<Product | null> {
   const { data, error } = await supabaseAdmin
     .from("products")
     .select("*")
@@ -38,7 +107,7 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
     return null;
   }
 
-  return data;
+  return data as Product;
 }
 
 export async function getProductById(id: string): Promise<Product | null> {
@@ -53,7 +122,7 @@ export async function getProductById(id: string): Promise<Product | null> {
     return null;
   }
 
-  return data;
+  return data as Product;
 }
 
 // =============================================================================
@@ -72,13 +141,13 @@ export async function getOrCreateCustomer(
     .single();
 
   if (existing) {
-    return existing;
+    return existing as Customer;
   }
 
   // Sinon, crée un nouveau client
   const { data, error } = await supabaseAdmin
     .from("customers")
-    .insert({ email, name })
+    .insert([{ email, name: name || null }])
     .select()
     .single();
 
@@ -87,7 +156,7 @@ export async function getOrCreateCustomer(
     return null;
   }
 
-  return data;
+  return data as Customer;
 }
 
 // =============================================================================
@@ -117,15 +186,17 @@ export async function createOrder(orderData: {
   // Crée la commande
   const { data: order, error: orderError } = await supabaseAdmin
     .from("orders")
-    .insert({
-      customer_id: customer?.id,
-      stripe_session_id: orderData.stripeSessionId,
-      status: "completed",
-      total_amount: orderData.totalAmount,
-      currency: orderData.currency || "EUR",
-      customer_email: orderData.customerEmail,
-      customer_name: orderData.customerName,
-    })
+    .insert([
+      {
+        customer_id: customer?.id || null,
+        stripe_session_id: orderData.stripeSessionId,
+        status: "completed",
+        total_amount: orderData.totalAmount,
+        currency: orderData.currency || "EUR",
+        customer_email: orderData.customerEmail,
+        customer_name: orderData.customerName || null,
+      },
+    ])
     .select()
     .single();
 
@@ -136,8 +207,8 @@ export async function createOrder(orderData: {
 
   // Crée les lignes de commande
   const orderItems = orderData.items.map((item) => ({
-    order_id: order.id,
-    product_id: item.productId,
+    order_id: (order as Order).id,
+    product_id: item.productId || null,
     product_slug: item.productSlug,
     product_name: item.productName,
     price: item.price,
@@ -152,7 +223,7 @@ export async function createOrder(orderData: {
     console.error("Error creating order items:", itemsError);
   }
 
-  return order;
+  return order as Order;
 }
 
 export async function getOrderByStripeSession(
@@ -169,7 +240,7 @@ export async function getOrderByStripeSession(
     return null;
   }
 
-  return data;
+  return data as Order;
 }
 
 export async function getOrdersByEmail(email: string): Promise<Order[]> {
@@ -184,7 +255,7 @@ export async function getOrdersByEmail(email: string): Promise<Order[]> {
     return [];
   }
 
-  return data || [];
+  return (data as Order[]) || [];
 }
 
 // =============================================================================
@@ -201,13 +272,15 @@ export async function createDownloadToken(data: {
   const expiresAt = new Date();
   expiresAt.setDate(expiresAt.getDate() + (data.expiresInDays || 7));
 
-  const { error } = await supabaseAdmin.from("downloads").insert({
-    order_id: data.orderId,
-    product_id: data.productId,
-    customer_email: data.customerEmail,
-    download_token: token,
-    expires_at: expiresAt.toISOString(),
-  });
+  const { error } = await supabaseAdmin.from("downloads").insert([
+    {
+      order_id: data.orderId,
+      product_id: data.productId,
+      customer_email: data.customerEmail,
+      download_token: token,
+      expires_at: expiresAt.toISOString(),
+    },
+  ]);
 
   if (error) {
     console.error("Error creating download token:", error);
@@ -232,28 +305,35 @@ export async function validateDownloadToken(token: string): Promise<{
     return { valid: false };
   }
 
+  const dl = download as Download;
+
   // Vérifie l'expiration
-  if (download.expires_at && new Date(download.expires_at) < new Date()) {
+  if (dl.expires_at && new Date(dl.expires_at) < new Date()) {
     return { valid: false };
   }
 
   // Vérifie le nombre de téléchargements
-  if (download.download_count >= download.max_downloads) {
+  if (dl.download_count >= dl.max_downloads) {
     return { valid: false };
   }
 
   // Récupère le produit
-  const product = download.product_id
-    ? await getProductById(download.product_id)
-    : null;
+  const product = dl.product_id ? await getProductById(dl.product_id) : null;
 
-  return { valid: true, download, product: product || undefined };
+  return { valid: true, download: dl, product: product || undefined };
 }
 
 export async function incrementDownloadCount(token: string): Promise<void> {
-  await supabaseAdmin.rpc("increment_download_count", { token_param: token });
-}
+  const { data: download } = await supabaseAdmin
+    .from("downloads")
+    .select("download_count")
+    .eq("download_token", token)
+    .single();
 
-// Type pour Download
-type Download = Database["public"]["Tables"]["downloads"]["Row"];
-import { Database } from "@/types/supabase";
+  if (download) {
+    await supabaseAdmin
+      .from("downloads")
+      .update({ download_count: (download.download_count as number) + 1 })
+      .eq("download_token", token);
+  }
+}
