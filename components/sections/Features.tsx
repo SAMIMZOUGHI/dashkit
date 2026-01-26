@@ -1,80 +1,101 @@
 // =============================================================================
 // FICHIER : components/sections/Features.tsx
-// RÔLE : Section présentant les avantages des templates
+// RÔLE : Grid de fonctionnalités avec effet glassmorphism
 // =============================================================================
 
-// Liste des fonctionnalités avec icônes
+"use client";
+
+import { motion } from "framer-motion";
+import { Zap, Palette, Lock, Code2, Smartphone, TrendingUp } from "lucide-react";
+
 const features = [
   {
-    icon: "⚡",
-    title: "Rapide à intégrer",
-    description: 
-      "Installez et personnalisez votre dashboard en quelques minutes.  Code propre et bien documenté.",
+    icon: Zap,
+    title: "Performance extrême",
+    description: "Optimisé pour des temps de chargement < 1s. Core Web Vitals parfaits.",
+    color: "from-yellow-400 to-orange-500",
   },
   {
-    icon: "🎨",
+    icon: Palette,
     title: "Design moderne",
-    description:
-      "Interface élégante et professionnelle. Mode sombre/clair inclus.  100% responsive.",
+    description: "Interface élégante avec mode sombre, glassmorphism et animations fluides.",
+    color: "from-purple-400 to-pink-500",
   },
   {
-    icon: "🔧",
-    title: "Personnalisable",
-    description: 
-      "Composants modulaires faciles à modifier. Tailwind CSS pour un styling rapide.",
+    icon: Lock,
+    title: "Sécurisé",
+    description: "Authentification intégrée, protection CSRF, headers de sécurité.",
+    color: "from-green-400 to-cyan-500",
   },
   {
-    icon: "📱",
-    title: "Responsive",
-    description:
-      "S'adapte parfaitement à tous les écrans :  mobile, tablette et desktop.",
+    icon: Code2,
+    title: "Code propre",
+    description: "TypeScript strict, composants réutilisables, documentation complète.",
+    color: "from-blue-400 to-indigo-500",
   },
   {
-    icon: "🔒",
-    title: "TypeScript",
-    description:
-      "Code typé pour moins de bugs et une meilleure expérience de développement.",
+    icon: Smartphone,
+    title: "100% Responsive",
+    description: "Parfait sur mobile, tablette et desktop. Design mobile-first.",
+    color: "from-pink-400 to-rose-500",
   },
   {
-    icon: "📚",
-    title: "Documentation",
-    description:
-      "Guide complet avec exemples de code.  Support par email pendant 6 mois.",
+    icon: TrendingUp,
+    title: "SEO optimisé",
+    description: "Métadonnées complètes, sitemap, structured data, temps de chargement optimaux.",
+    color: "from-cyan-400 to-blue-500",
   },
 ];
 
-export function Features() {
+export default function Features() {
   return (
-    <section id="features" className="py-24 bg-white">
-      <div className="mx-auto max-w-7xl px-4 sm: px-6 lg:px-8">
-        {/* En-tête de section */}
+    <section className="py-24 bg-white relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* En-tête */}
         <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold text-zinc-900">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl md:text-5xl font-bold text-zinc-900 mb-4"
+          >
             Tout ce dont vous avez besoin
-          </h2>
-          <p className="mt-4 text-lg text-zinc-600 max-w-2xl mx-auto">
-            Nos templates incluent tout le nécessaire pour créer une application SaaS professionnelle.
-          </p>
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-xl text-zinc-600"
+          >
+            Un template complet, prêt à l'emploi
+          </motion.p>
         </div>
 
-        {/* Grille de fonctionnalités */}
-        <div className="grid grid-cols-1 md: grid-cols-2 lg: grid-cols-3 gap-8">
+        {/* Grid de features */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((feature, index) => (
-            <div
+            <motion.div
               key={index}
-              className="p-6 rounded-2xl border border-zinc-200 hover: border-zinc-300 hover:shadow-lg transition-all duration-300"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
+              whileHover={{ y: -5, transition: { duration: 0.2 } }}
+              className="group p-6 rounded-2xl border border-zinc-200 bg-white hover:shadow-xl transition-all duration-300"
             >
-              {/* Icône */}
-              <div className="text-4xl mb-4">{feature.icon}</div>
-              
-              {/* Titre */}
+              {/* Icône avec gradient */}
+              <div
+                className={`w-12 h-12 rounded-xl bg-gradient-to-br ${feature.color} p-2.5 mb-4 group-hover:scale-110 transition-transform`}
+              >
+                <feature.icon className="w-full h-full text-white" />
+              </div>
+
               <h3 className="text-xl font-semibold text-zinc-900 mb-2">
                 {feature.title}
               </h3>
-              
-              {/* Description */}
               <p className="text-zinc-600">{feature.description}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

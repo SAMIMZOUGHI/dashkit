@@ -1,147 +1,105 @@
 // =============================================================================
 // FICHIER : components/ui/Modal.tsx
-// RÔLE :  Composant modal (popup) réutilisable
-// CRITICITÉ : 🟡 MOYENNE - Utilisé pour la démo et potentiellement ailleurs
-// =============================================================================
-//
-// 🎓 LEÇON :  Qu'est-ce qu'un Modal ?
-//
-// Un modal est une fenêtre qui s'affiche par-dessus le contenu de la page. 
-// Il bloque l'interaction avec le reste de la page jusqu'à sa fermeture.
-//
-// Éléments clés :
-// - Overlay (fond sombre semi-transparent)
-// - Contenu centré
-// - Bouton de fermeture
-// - Fermeture au clic sur l'overlay ou touche Escape
-//
+// RÔLE : Composant Modal réutilisable - Style dark premium
 // =============================================================================
 
 "use client";
 
 import { useEffect } from "react";
-import { cn } from "@/lib/utils";
+import { motion, AnimatePresence } from "framer-motion";
+import { X } from "lucide-react";
 
-// -----------------------------------------------------------------------------
-// PROPS
-// -----------------------------------------------------------------------------
 interface ModalProps {
-  // Contrôle l'affichage du modal
   isOpen: boolean;
-  
-  // Fonction appelée pour fermer le modal
   onClose: () => void;
-  
-  // Titre du modal (optionnel)
-  title?: string;
-  
-  // Contenu du modal
+  title: string;
   children: React.ReactNode;
-  
-  // Taille du modal
-  size?: "sm" | "md" | "lg" | "xl" | "full";
+  size?: "small" | "medium" | "large" | "full";
 }
 
-// -----------------------------------------------------------------------------
-// COMPOSANT : Modal
-// -----------------------------------------------------------------------------
-export function Modal({
-  isOpen,
-  onClose,
-  title,
-  children,
-  size = "lg",
+export function Modal({ 
+  isOpen, 
+  onClose, 
+  title, 
+  children, 
+  size = "large" 
 }: ModalProps) {
-  // -------------------------------------------------
-  // EFFET : Fermer avec la touche Escape
-  // -------------------------------------------------
+  
+  // Bloquer le scroll du body quand le modal est ouvert
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
+
+  // Fermer avec Escape
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
+      if (e.key === "Escape" && isOpen) {
         onClose();
       }
     };
-
-    // Ajoute l'écouteur quand le modal est ouvert
-    if (isOpen) {
-      document.addEventListener("keydown", handleEscape);
-      // Empêche le scroll du body quand le modal est ouvert
-      document.body.style.overflow = "hidden";
-    }
-
-    // Nettoyage :  retire l'écouteur et restaure le scroll
-    return () => {
-      document.removeEventListener("keydown", handleEscape);
-      document.body.style. overflow = "unset";
-    };
+    window.addEventListener("keydown", handleEscape);
+    return () => window.removeEventListener("keydown", handleEscape);
   }, [isOpen, onClose]);
 
-  // Ne rien afficher si le modal est fermé
-  if (!isOpen) return null;
-
   // Tailles du modal
-  const sizes = {
-    sm: "max-w-md",
-    md: "max-w-lg",
-    lg:  "max-w-4xl",
-    xl: "max-w-6xl",
-    full: "max-w-[95vw] max-h-[95vh]",
+  const sizeClasses = {
+    small: "max-w-md",
+    medium: "max-w-2xl",
+    large: "max-w-5xl",
+    full: "max-w-7xl",
   };
 
   return (
-    // =========================================================================
-    // OVERLAY : Fond sombre qui couvre toute la page
-    // =========================================================================
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
-      onClick={onClose} // Ferme au clic sur l'overlay
-    >
-      {/* ===================================================================== */}
-      {/* CONTENU DU MODAL */}
-      {/* onClick stopPropagation empêche la fermeture au clic sur le contenu */}
-      {/* ===================================================================== */}
-      <div
-        className={cn(
-          "relative w-full bg-white rounded-2xl shadow-2xl animate-in zoom-in-95 duration-200",
-          sizes[size]
-        )}
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* ================================================================= */}
-        {/* HEADER : Titre + Bouton fermer */}
-        {/* ================================================================= */}
-        <div className="flex items-center justify-between p-4 border-b border-zinc-200">
-          {title && (
-            <h2 className="text-lg font-semibold text-zinc-900">{title}</h2>
-          )}
-          
-          {/* Bouton fermer (X) */}
-          <button
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             onClick={onClose}
-            className="ml-auto p-2 text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100 rounded-lg transition-colors"
-            aria-label="Fermer"
-          >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
-        </div>
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50"
+          />
 
-        {/* ================================================================= */}
-        {/* BODY : Contenu du modal */}
-        {/* ================================================================= */}
-        <div className="p-4">{children}</div>
-      </div>
-    </div>
+          {/* Modal */}
+          <div className="fixed inset-0 z-50 overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center p-4">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                transition={{ duration: 0.2 }}
+                className={`relative w-full ${sizeClasses[size]} glass-card rounded-3xl p-6 md:p-8`}
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Header */}
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-2xl md:text-3xl font-bold text-white">
+                    {title}
+                  </h2>
+                  <button
+                    onClick={onClose}
+                    className="p-2 hover:bg-white/10 rounded-xl transition-colors"
+                  >
+                    <X className="w-6 h-6" />
+                  </button>
+                </div>
+
+                {/* Content */}
+                <div>{children}</div>
+              </motion.div>
+            </div>
+          </div>
+        </>
+      )}
+    </AnimatePresence>
   );
 }

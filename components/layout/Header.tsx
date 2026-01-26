@@ -1,124 +1,132 @@
+// =============================================================================
+// FICHIER : components/layout/Header.tsx
+// RÔLE : Header avec glassmorphism - FIX hydration error
+// =============================================================================
+
 "use client";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Logo } from "@/components/ui/Logo";
-import { Button } from "@/components/ui/Button";
+import { ShoppingCart, Menu, X } from "lucide-react";
 import { useCart } from "@/store/cart";
-import { cn } from "@/lib/utils";
+import { motion, AnimatePresence } from "framer-motion";
 
-const navLinks = [
-  { href: "/", label: "Accueil" },
-  { href: "/products", label: "Templates" },
-  { href: "/#features", label: "Fonctionnalités" },
-  { href: "/#faq", label: "FAQ" },
-];
-
-export function Header() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
+export default function Header() {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isClient, setIsClient] = useState(false); // ← FIX hydration
   const totalItems = useCart((state) => state.getTotalItems());
 
+  // =========================================================================
+  // FIX HYDRATION : Attendre que le composant soit monté côté client
+  // =========================================================================
   useEffect(() => {
-    setIsMounted(true);
+    setIsClient(true);
   }, []);
 
-  return (
-    <header className="sticky top-0 z-50 w-full border-b border-zinc-200 bg-white/80 backdrop-blur-md">
-      <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
-          <div className="flex items-center">
-            <Logo />
-          </div>
+  // Détecte le scroll pour ajouter un effet blur au header
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-          <div className="hidden md:flex md:items-center md:gap-8">
-            {navLinks. map((link) => (
+  const navLinks = [
+    { href: "/", label: "Accueil" },
+    { href: "/products", label: "Templates" },
+    { href: "/#features", label: "Features" },
+    { href: "/#pricing", label: "Pricing" },
+  ];
+
+  return (
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? "glass-card border-b border-white/10"
+          : "bg-transparent"
+      }`}
+    >
+      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-20">
+          
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2 group">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+              <span className="text-white font-bold text-xl">D</span>
+            </div>
+            <span className="text-xl font-bold">DashKit</span>
+          </Link>
+
+          {/* Navigation desktop */}
+          <div className="hidden md:flex items-center gap-8">
+            {navLinks.map((link) => (
               <Link
-                key={link. href}
-                href={link. href}
-                className="text-sm font-medium text-zinc-600 hover:text-zinc-900 transition-colors"
+                key={link.href}
+                href={link.href}
+                className="text-gray-300 hover:text-white transition-colors relative group"
               >
                 {link.label}
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-600 to-pink-600 group-hover:w-full transition-all duration-300" />
               </Link>
             ))}
           </div>
 
+          {/* Actions */}
           <div className="flex items-center gap-4">
+            {/* Panier avec badge - FIX hydration */}
             <Link
               href="/cart"
-              className="relative p-2 text-zinc-600 hover:text-zinc-900 transition-colors"
-              aria-label="Voir le panier"
+              className="relative p-2 hover:bg-white/5 rounded-xl transition-colors"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-6 h-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M2.25 3h1.386c.51 0 . 955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a. 75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
-                />
-              </svg>
-              {isMounted && totalItems > 0 ?  (
-                <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-xs font-bold text-white">
+              <ShoppingCart className="w-6 h-6" />
+              {/* ⚠️ N'afficher le badge QUE côté client pour éviter l'hydration mismatch */}
+              {isClient && totalItems > 0 && (
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full text-xs font-bold flex items-center justify-center">
                   {totalItems}
                 </span>
-              ) : null}
+              )}
             </Link>
 
-            <div className="hidden sm:block">
-              <Button href="/products" size="sm">
-                Voir les templates
-              </Button>
-            </div>
-
+            {/* Menu mobile */}
             <button
-              type="button"
-              className="md:hidden p-2 text-zinc-600"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="Ouvrir le menu"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="md:hidden p-2 hover:bg-white/5 rounded-xl transition-colors"
             >
-              {mobileMenuOpen ? (
-                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
+              {isMobileMenuOpen ? (
+                <X className="w-6 h-6" />
               ) : (
-                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
+                <Menu className="w-6 h-6" />
               )}
             </button>
           </div>
         </div>
 
-        <div
-          className={cn(
-            "md:hidden overflow-hidden transition-all duration-300",
-            mobileMenuOpen ? "max-h-64 pb-4" :  "max-h-0"
+        {/* Menu mobile */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="md:hidden border-t border-white/10 mt-2 pt-4 pb-4"
+            >
+              <div className="flex flex-col gap-4">
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="text-gray-300 hover:text-white transition-colors py-2"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            </motion.div>
           )}
-        >
-          <div className="flex flex-col gap-2 pt-4">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="px-4 py-2 text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 rounded-lg transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {link.label}
-              </Link>
-            ))}
-            <div className="px-4 pt-2">
-              <Button href="/products" className="w-full">
-                Voir les templates
-              </Button>
-            </div>
-          </div>
-        </div>
+        </AnimatePresence>
       </nav>
     </header>
   );
