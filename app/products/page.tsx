@@ -41,7 +41,7 @@ export default function ProductsPage() {
           >
             Our{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
-              Templates
+              Templates Gallery
             </span>
           </motion.h1>
 
@@ -51,8 +51,8 @@ export default function ProductsPage() {
             transition={{ delay: 0.2 }}
             className="text-xl text-gray-400 max-w-2xl mx-auto"
           >
-            Des templates de dashboard professionnels, prêts à déployer.
-            Gagnez des semaines de développement.
+            Explore a wide range of designs and try our free live demos.
+            Professional dashboard templates, ready to deploy.
           </motion.p>
         </div>
 

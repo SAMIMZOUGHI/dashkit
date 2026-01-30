@@ -71,10 +71,10 @@ export default function HomePage() {
             transition={{ delay: 0.1 }}
             className="text-6xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight"
           >
-            Your dashboards,
+            Turn Data into
             <br />
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 animate-gradient-slow">
-              simplified
+              Pure Visual Gold
             </span>
           </motion.h1>
 
@@ -85,9 +85,7 @@ export default function HomePage() {
             transition={{ delay: 0.2 }}
             className="text-xl md:text-2xl text-gray-400 mb-12 max-w-3xl mx-auto"
           >
-            Créez, gérez et déployez vos dashboards avec simplicité.
-            <br />
-            Templates Next.js premium prêts à l'emploi.
+            Premium dashboard templates for Looker, Power BI, and Tableau.
           </motion.p>
 
           {/* Boutons CTA */}
@@ -109,7 +107,7 @@ export default function HomePage() {
               href="#demo"
               className="px-8 py-4 glass-card glass-card-hover rounded-2xl font-semibold text-lg transition-all duration-300 flex items-center gap-2"
             >
-              Voir la démo
+              See live demo
             </Link>
           </motion.div>
 
@@ -305,7 +303,7 @@ export default function HomePage() {
               Three simple steps to
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
-                organized bliss
+                create your Dashboard
               </span>
             </motion.h2>
           </div>
@@ -315,19 +313,19 @@ export default function HomePage() {
               {
                 number: "1",
                 title: "Choose your template",
-                description: "Parcourez notre collection de templates premium et choisissez celui qui correspond à vos besoins.",
+                description: "Find the perfect fit with our collection of professionally crafted report templates.",
                 icon: Download
               },
               {
                 number: "2",
-                title: "Customize & Deploy",
-                description: "Personnalisez les couleurs, composants et déployez en un clic sur Vercel.",
+                title: "Create & Customize",
+                description: "Create professional reports in minutes with our one-click automation.",
                 icon: Code2
               },
               {
                 number: "3",
-                title: "Scale with ease",
-                description: "Ajoutez des fonctionnalités, intégrez vos APIs et faites évoluer votre dashboard.",
+                title: "Share insights",
+                description: "Edit in real-time, share instantly—empower your team with actionable intelligence.",
                 icon: TrendingUp
               }
             ].map((step, index) => (
@@ -351,127 +349,6 @@ export default function HomePage() {
                 </div>
               </motion.div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ===================================================================== */}
-      {/* PRICING SECTION - Cards de prix */}
-      {/* ===================================================================== */}
-      <section className="relative py-32 grain-overlay">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          <div className="text-center mb-20">
-            <motion.p
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              className="text-sm uppercase tracking-wider text-purple-400 mb-4"
-            >
-              Pricing
-            </motion.p>
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-5xl md:text-6xl font-bold"
-            >
-              Choose your plan
-            </motion.h2>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {/* Plan Pro */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="glass-card glass-card-hover rounded-3xl p-8 spotlight-card"
-            >
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center mb-6">
-                <Sparkles className="w-8 h-8 text-white" />
-              </div>
-              
-              <h3 className="text-3xl font-bold mb-2">Lookze Pro</h3>
-              <p className="text-gray-400 mb-6">Pour les projets individuels</p>
-              
-              <div className="mb-8">
-                <span className="text-5xl font-bold">49€</span>
-                <span className="text-gray-400"> / one-time</span>
-              </div>
-
-              <ul className="space-y-4 mb-8">
-                {[
-                  "50+ composants UI",
-                  "Mode sombre/clair",
-                  "100% Responsive",
-                  "Documentation complète",
-                  "Support 6 mois",
-                  "Mises à jour à vie"
-                ].map((feature, i) => (
-                  <li key={i} className="flex items-center gap-3">
-                    <Check className="w-5 h-5 text-green-400 flex-shrink-0" />
-                    <span className="text-gray-300">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <Link
-                href="/products/lookze-pro"
-                className="block w-full py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl font-semibold text-center hover:from-purple-700 hover:to-pink-700 transition-all duration-300"
-              >
-                Get started
-              </Link>
-            </motion.div>
-
-            {/* Plan Team */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="glass-card glass-card-hover rounded-3xl p-8 spotlight-card relative overflow-hidden"
-            >
-              {/* Badge "Popular" */}
-              <div className="absolute top-4 right-4 px-3 py-1 bg-purple-500 rounded-full text-xs font-semibold">
-                Popular
-              </div>
-
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mb-6">
-                <Users className="w-8 h-8 text-white" />
-              </div>
-              
-              <h3 className="text-3xl font-bold mb-2">Lookze Team</h3>
-              <p className="text-gray-400 mb-6">Pour les équipes</p>
-              
-              <div className="mb-8">
-                <span className="text-5xl font-bold">99€</span>
-                <span className="text-gray-400"> / per member / month</span>
-              </div>
-
-              <ul className="space-y-4 mb-8">
-                {[
-                  "Tout de Lookze Pro",
-                  "Unlimited projects",
-                  "Team collaboration tools",
-                  "Advanced security features",
-                  "Priority support",
-                  "Dedicated account manager"
-                ].map((feature, i) => (
-                  <li key={i} className="flex items-center gap-3">
-                    <Check className="w-5 h-5 text-green-400 flex-shrink-0" />
-                    <span className="text-gray-300">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <Link
-                href="/products/lookze-team"
-                className="block w-full py-4 bg-white text-black rounded-2xl font-semibold text-center hover:bg-gray-100 transition-all duration-300"
-              >
-                Get started
-              </Link>
-            </motion.div>
           </div>
         </div>
       </section>
