@@ -154,7 +154,7 @@ export default function SupportPage() {
               Get help from our support team within 24-48 hours.
             </p>
             <a
-              href="mailto:support@dashkit.online"
+              href="mailto:hello@dashkit.online"
               className="inline-block px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-xl font-semibold hover:from-blue-700 hover:to-cyan-700 transition-all duration-300"
             >
               Send Email
