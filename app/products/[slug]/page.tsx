@@ -9,7 +9,8 @@ import { use } from "react"; // ← Import React.use()
 import { motion } from "framer-motion";
 import { notFound } from "next/navigation";
 import { getProductBySlug } from "@/lib/products";
-import { Check, Star, Sparkles, ExternalLink } from "lucide-react";
+import { Check, Star, ExternalLink } from "lucide-react";
+import { ImageGallery } from "@/components/ui/ImageGallery";
 import { useCart } from "@/store/cart";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -69,13 +70,11 @@ export default function ProductDetailPage({
             animate={{ opacity: 1, x: 0 }}
             className="sticky top-32"
           >
-            <div className="glass-card rounded-3xl p-4 mb-6">
-              <div className="aspect-video rounded-2xl bg-gradient-to-br from-purple-900/40 via-black to-pink-900/40 relative overflow-hidden">
-                <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:40px_40px]" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <Sparkles className="w-20 h-20 text-purple-400/50" />
-                </div>
-              </div>
+            <div className="mb-6">
+              <ImageGallery
+                images={product.images.gallery}
+                productName={product.name}
+              />
             </div>
 
             {/* Bouton démo */}

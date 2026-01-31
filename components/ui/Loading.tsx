@@ -18,41 +18,6 @@ export function Spinner({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
   );
 }
 
-// Loading avec texte
-export function LoadingState({ message = "Chargement..." }: { message?: string }) {
-  return (
-    <div className="flex flex-col items-center justify-center py-12">
-      <Spinner size="lg" />
-      <p className="mt-4 text-zinc-600">{message}</p>
-    </div>
-  );
-}
-
-// Skeleton pour les cartes produit
-export function ProductCardSkeleton() {
-  return (
-    <div className="bg-white rounded-2xl border border-zinc-200 overflow-hidden animate-pulse">
-      <div className="aspect-video bg-zinc-200" />
-      <div className="p-6">
-        <div className="h-6 bg-zinc-200 rounded w-3/4 mb-2" />
-        <div className="h-4 bg-zinc-200 rounded w-full mb-4" />
-        <div className="h-4 bg-zinc-200 rounded w-1/2" />
-      </div>
-    </div>
-  );
-}
-
-// Skeleton pour la grille de produits
-export function ProductGridSkeleton({ count = 3 }: { count?: number }) {
-  return (
-    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {Array.from({ length: count }).map((_, i) => (
-        <ProductCardSkeleton key={i} />
-      ))}
-    </div>
-  );
-}
-
 // Skeleton pour la page produit
 export function ProductPageSkeleton() {
   return (
@@ -75,24 +40,6 @@ export function ProductPageSkeleton() {
           </div>
         </div>
       </section>
-    </div>
-  );
-}
-
-// Skeleton pour le panier
-export function CartSkeleton() {
-  return (
-    <div className="animate-pulse">
-      {[1, 2].map((i) => (
-        <div key={i} className="flex gap-4 py-6 border-b border-zinc-200">
-          <div className="w-24 h-24 bg-zinc-200 rounded-lg" />
-          <div className="flex-1">
-            <div className="h-5 bg-zinc-200 rounded w-1/2 mb-2" />
-            <div className="h-4 bg-zinc-200 rounded w-3/4 mb-4" />
-            <div className="h-6 bg-zinc-200 rounded w-20" />
-          </div>
-        </div>
-      ))}
     </div>
   );
 }

@@ -13,8 +13,3 @@ if (!process.env.STRIPE_SECRET_KEY) {
 
 // Initialisation : Création de l'instance Stripe
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-
-// Helper : Formater le prix pour Stripe (centimes)
-export function formatAmountForStripe(amount: number): number {
-  return Math.round(amount);
-}
