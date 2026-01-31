@@ -24,8 +24,9 @@ export async function sendPurchaseEmail({
 }: SendPurchaseEmailParams) {
   try {
     const { data, error } = await resend.emails.send({
-      from: "DashKit <hello@dashkit.online>", // Change avec ton domaine vérifié
+      from: "DashKit <hello@dashkit.online>",
       to: [to],
+      replyTo: "hello@dashkit.online",
       subject: `🎉 Your purchase: ${productName}`,
       html: `
 <!DOCTYPE html>
