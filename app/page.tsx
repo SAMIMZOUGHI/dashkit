@@ -1,16 +1,18 @@
 // =============================================================================
 // FICHIER : app/page.tsx
-// RÔLE : Homepage premium style dark moderne (inspiré Databloo)
+// RÔLE : Homepage premium - Design dynamique avec charts et animations
 // =============================================================================
 
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import {
   ArrowRight,
   Check,
   TrendingUp,
+  TrendingDown,
   Zap,
   Palette,
   Shield,
@@ -19,278 +21,322 @@ import {
   LineChart,
   BarChart3,
   Activity,
+  Users,
+  DollarSign,
+  Eye,
+  MousePointerClick,
+  Play,
 } from "lucide-react";
 
 // =============================================================================
-// COMPOSANTS CHARTS FLOTTANTS
+// ANIMATED COUNTER COMPONENT
 // =============================================================================
 
-// Donut Chart - Sessions par Device
+const AnimatedCounter = ({ value, suffix = "", prefix = "", duration = 2 }: {
+  value: number;
+  suffix?: string;
+  prefix?: string;
+  duration?: number;
+}) => {
+  const [displayValue, setDisplayValue] = useState(0);
+
+  useEffect(() => {
+    const controls = animate(0, value, {
+      duration,
+      onUpdate: (v) => setDisplayValue(Math.floor(v)),
+    });
+    return () => controls.stop();
+  }, [value, duration]);
+
+  return <span>{prefix}{displayValue.toLocaleString()}{suffix}</span>;
+};
+
+// =============================================================================
+// COMPOSANTS CHARTS
+// =============================================================================
+
+// Donut Chart animé
 const DonutChart = ({ className = "" }: { className?: string }) => (
   <motion.div
-    initial={{ opacity: 0, scale: 0.8 }}
-    animate={{ opacity: 1, scale: 1 }}
-    transition={{ duration: 0.8, delay: 0.3 }}
-    className={`glass-card rounded-2xl p-5 shadow-2xl ${className}`}
+    initial={{ opacity: 0, scale: 0.8, x: -30 }}
+    animate={{ opacity: 1, scale: 1, x: 0 }}
+    transition={{ duration: 0.6, delay: 0.2 }}
+    className={`glass-card rounded-2xl p-5 shadow-2xl shadow-purple-500/10 ${className}`}
   >
     <div className="flex items-center justify-between mb-3">
-      <span className="text-sm text-gray-400">Sessions by device</span>
-      <span className="text-xs px-2 py-1 bg-green-500/20 text-green-400 rounded-full flex items-center gap-1">
-        <TrendingUp className="w-3 h-3" /> 12%
-      </span>
+      <span className="text-sm font-medium text-gray-300">Traffic Sources</span>
+      <motion.span
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ delay: 1, type: "spring" }}
+        className="text-xs px-2 py-1 bg-green-500/20 text-green-400 rounded-full flex items-center gap-1"
+      >
+        <TrendingUp className="w-3 h-3" /> 18%
+      </motion.span>
     </div>
     <div className="flex items-center gap-4">
       <div className="relative">
-        <svg className="w-24 h-24 transform -rotate-90">
-          <circle
-            cx="48"
-            cy="48"
-            r="40"
-            stroke="rgba(139, 92, 246, 0.2)"
-            strokeWidth="12"
-            fill="none"
-          />
-          {/* Desktop - 65% */}
+        <svg className="w-28 h-28 transform -rotate-90">
+          <circle cx="56" cy="56" r="44" stroke="rgba(255,255,255,0.05)" strokeWidth="14" fill="none" />
+          {/* Organic - 45% */}
           <motion.circle
-            initial={{ strokeDashoffset: 251 }}
-            animate={{ strokeDashoffset: 88 }}
-            transition={{ duration: 1.2, delay: 0.5 }}
-            cx="48"
-            cy="48"
-            r="40"
-            stroke="url(#donutGradient1)"
-            strokeWidth="12"
-            fill="none"
-            strokeDasharray="251"
-            strokeLinecap="round"
+            initial={{ strokeDashoffset: 276 }}
+            animate={{ strokeDashoffset: 152 }}
+            transition={{ duration: 1.2, delay: 0.4, ease: "easeOut" }}
+            cx="56" cy="56" r="44"
+            stroke="url(#donutGrad1)" strokeWidth="14" fill="none"
+            strokeDasharray="276" strokeLinecap="round"
           />
-          {/* Mobile - 35% */}
+          {/* Paid - 30% */}
           <motion.circle
-            initial={{ strokeDashoffset: 251 }}
-            animate={{ strokeDashoffset: 163 }}
-            transition={{ duration: 1.2, delay: 0.7 }}
-            cx="48"
-            cy="48"
-            r="40"
-            stroke="#06b6d4"
-            strokeWidth="12"
-            fill="none"
-            strokeDasharray="251"
-            strokeDashoffset="163"
-            strokeLinecap="round"
-            transform="rotate(234 48 48)"
+            initial={{ strokeDashoffset: 276 }}
+            animate={{ strokeDashoffset: 193 }}
+            transition={{ duration: 1.2, delay: 0.6, ease: "easeOut" }}
+            cx="56" cy="56" r="44"
+            stroke="#06b6d4" strokeWidth="14" fill="none"
+            strokeDasharray="276" strokeLinecap="round"
+            transform="rotate(162 56 56)"
+          />
+          {/* Social - 25% */}
+          <motion.circle
+            initial={{ strokeDashoffset: 276 }}
+            animate={{ strokeDashoffset: 207 }}
+            transition={{ duration: 1.2, delay: 0.8, ease: "easeOut" }}
+            cx="56" cy="56" r="44"
+            stroke="#f97316" strokeWidth="14" fill="none"
+            strokeDasharray="276" strokeLinecap="round"
+            transform="rotate(270 56 56)"
           />
           <defs>
-            <linearGradient id="donutGradient1" x1="0%" y1="0%" x2="100%" y2="0%">
+            <linearGradient id="donutGrad1" x1="0%" y1="0%" x2="100%" y2="0%">
               <stop offset="0%" stopColor="#a855f7" />
               <stop offset="100%" stopColor="#ec4899" />
             </linearGradient>
           </defs>
         </svg>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-lg font-bold">24.5K</span>
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <span className="text-2xl font-bold"><AnimatedCounter value={847} suffix="K" /></span>
+          <span className="text-[10px] text-gray-500">visitors</span>
         </div>
       </div>
       <div className="space-y-2 text-xs">
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500"></div>
-          <span className="text-gray-400">Desktop</span>
-          <span className="text-white font-medium">65%</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-cyan-400"></div>
-          <span className="text-gray-400">Mobile</span>
-          <span className="text-white font-medium">35%</span>
-        </div>
+        {[
+          { label: "Organic", value: "45%", color: "bg-gradient-to-r from-purple-500 to-pink-500" },
+          { label: "Paid", value: "30%", color: "bg-cyan-400" },
+          { label: "Social", value: "25%", color: "bg-orange-500" },
+        ].map((item, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 1 + i * 0.1 }}
+            className="flex items-center gap-2"
+          >
+            <div className={`w-3 h-3 rounded-full ${item.color}`}></div>
+            <span className="text-gray-400 w-14">{item.label}</span>
+            <span className="text-white font-semibold">{item.value}</span>
+          </motion.div>
+        ))}
       </div>
     </div>
   </motion.div>
 );
 
-// Bar Chart - Revenue par Channel
-const BarChart = ({ className = "" }: { className?: string }) => (
+// Bar Chart animé - Revenue
+const BarChartRevenue = ({ className = "" }: { className?: string }) => (
   <motion.div
-    initial={{ opacity: 0, scale: 0.8 }}
-    animate={{ opacity: 1, scale: 1 }}
-    transition={{ duration: 0.8, delay: 0.4 }}
-    className={`glass-card rounded-2xl p-5 shadow-2xl ${className}`}
+    initial={{ opacity: 0, scale: 0.8, x: -30 }}
+    animate={{ opacity: 1, scale: 1, x: 0 }}
+    transition={{ duration: 0.6, delay: 0.4 }}
+    className={`glass-card rounded-2xl p-5 shadow-2xl shadow-purple-500/10 ${className}`}
   >
     <div className="flex items-center justify-between mb-4">
-      <span className="text-sm text-gray-400">Revenue by channel</span>
+      <span className="text-sm font-medium text-gray-300">Monthly Revenue</span>
+      <span className="text-lg font-bold text-white">$<AnimatedCounter value={124} suffix="K" /></span>
     </div>
-    <div className="flex items-end gap-2 h-28">
-      {[
-        { value: 85, color: "from-purple-500 to-purple-600", label: "Organic" },
-        { value: 45, color: "from-cyan-500 to-cyan-600", label: "Paid" },
-        { value: 70, color: "from-pink-500 to-pink-600", label: "Social" },
-        { value: 30, color: "from-orange-500 to-orange-600", label: "Direct" },
-        { value: 55, color: "from-green-500 to-green-600", label: "Email" },
-      ].map((bar, i) => (
-        <div key={i} className="flex flex-col items-center gap-1 flex-1">
-          <motion.div
-            initial={{ height: 0 }}
-            animate={{ height: `${bar.value}%` }}
-            transition={{ duration: 0.8, delay: 0.6 + i * 0.1 }}
-            className={`w-full bg-gradient-to-t ${bar.color} rounded-t-md min-h-[4px]`}
-          />
-          <span className="text-[10px] text-gray-500">{bar.label.slice(0, 3)}</span>
-        </div>
+    <div className="flex items-end gap-1.5 h-24">
+      {[40, 65, 45, 80, 55, 90, 70, 95, 60, 85, 75, 100].map((height, i) => (
+        <motion.div
+          key={i}
+          initial={{ height: 0 }}
+          animate={{ height: `${height}%` }}
+          transition={{ duration: 0.5, delay: 0.5 + i * 0.05, ease: "easeOut" }}
+          className={`flex-1 rounded-t-sm ${i === 11 ? 'bg-gradient-to-t from-purple-600 to-pink-500' : 'bg-gradient-to-t from-purple-600/40 to-pink-500/40'}`}
+        />
       ))}
+    </div>
+    <div className="flex justify-between text-[9px] text-gray-500 mt-2">
+      <span>Jan</span><span>Mar</span><span>Jun</span><span>Sep</span><span>Dec</span>
     </div>
   </motion.div>
 );
 
-// Line Chart - Sessions Over Time
-const LineChartWidget = ({ className = "" }: { className?: string }) => (
+// Line Chart avec area - Sessions
+const LineChartSessions = ({ className = "" }: { className?: string }) => (
   <motion.div
-    initial={{ opacity: 0, scale: 0.8 }}
-    animate={{ opacity: 1, scale: 1 }}
-    transition={{ duration: 0.8, delay: 0.5 }}
-    className={`glass-card rounded-2xl p-5 shadow-2xl ${className}`}
+    initial={{ opacity: 0, scale: 0.8, x: 30 }}
+    animate={{ opacity: 1, scale: 1, x: 0 }}
+    transition={{ duration: 0.6, delay: 0.3 }}
+    className={`glass-card rounded-2xl p-5 shadow-2xl shadow-cyan-500/10 ${className}`}
   >
     <div className="flex items-center justify-between mb-3">
-      <span className="text-sm text-gray-400">Sessions over time</span>
-      <span className="text-xs px-2 py-1 bg-green-500/20 text-green-400 rounded-full flex items-center gap-1">
+      <span className="text-sm font-medium text-gray-300">Sessions Trend</span>
+      <motion.span
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ delay: 1.2, type: "spring" }}
+        className="text-xs px-2 py-1 bg-green-500/20 text-green-400 rounded-full flex items-center gap-1"
+      >
         <TrendingUp className="w-3 h-3" /> 24%
-      </span>
+      </motion.span>
     </div>
-    <div className="relative h-24">
-      <svg className="w-full h-full" viewBox="0 0 200 70" preserveAspectRatio="none">
+    <div className="relative h-28">
+      <svg className="w-full h-full" viewBox="0 0 200 80" preserveAspectRatio="none">
         <defs>
-          <linearGradient id="lineGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="rgba(168, 85, 247, 0.4)" />
-            <stop offset="100%" stopColor="rgba(168, 85, 247, 0)" />
+          <linearGradient id="lineArea" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="rgba(6, 182, 212, 0.4)" />
+            <stop offset="100%" stopColor="rgba(6, 182, 212, 0)" />
           </linearGradient>
-          <linearGradient id="strokeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#a855f7" />
-            <stop offset="50%" stopColor="#ec4899" />
-            <stop offset="100%" stopColor="#06b6d4" />
+          <linearGradient id="lineStroke" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#06b6d4" />
+            <stop offset="50%" stopColor="#a855f7" />
+            <stop offset="100%" stopColor="#ec4899" />
           </linearGradient>
         </defs>
-        {/* Area */}
         <motion.path
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.8 }}
-          d="M0,55 Q20,50 40,45 T80,40 T120,25 T160,30 T200,15 L200,70 L0,70 Z"
-          fill="url(#lineGradient)"
+          transition={{ duration: 0.8, delay: 0.8 }}
+          d="M0,65 Q20,60 35,55 T70,45 T105,50 T140,30 T175,35 T200,15 L200,80 L0,80 Z"
+          fill="url(#lineArea)"
         />
-        {/* Line */}
         <motion.path
           initial={{ pathLength: 0 }}
           animate={{ pathLength: 1 }}
-          transition={{ duration: 1.5, delay: 0.6 }}
-          d="M0,55 Q20,50 40,45 T80,40 T120,25 T160,30 T200,15"
-          fill="none"
-          stroke="url(#strokeGradient)"
-          strokeWidth="2.5"
-          strokeLinecap="round"
+          transition={{ duration: 1.5, delay: 0.5, ease: "easeInOut" }}
+          d="M0,65 Q20,60 35,55 T70,45 T105,50 T140,30 T175,35 T200,15"
+          fill="none" stroke="url(#lineStroke)" strokeWidth="3" strokeLinecap="round"
         />
-        {/* Dots */}
-        {[
-          { x: 0, y: 55 },
-          { x: 40, y: 45 },
-          { x: 80, y: 40 },
-          { x: 120, y: 25 },
-          { x: 160, y: 30 },
-          { x: 200, y: 15 },
-        ].map((point, i) => (
+        {[{x:0,y:65},{x:35,y:55},{x:70,y:45},{x:105,y:50},{x:140,y:30},{x:175,y:35},{x:200,y:15}].map((p,i) => (
           <motion.circle
             key={i}
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.3, delay: 1 + i * 0.1 }}
-            cx={point.x}
-            cy={point.y}
-            r="3"
-            fill="#fff"
-            stroke="#a855f7"
-            strokeWidth="2"
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 1.2 + i * 0.08, type: "spring", stiffness: 300 }}
+            cx={p.x} cy={p.y} r="4" fill="#0f0f0f" stroke="#06b6d4" strokeWidth="2"
           />
         ))}
       </svg>
     </div>
-    <div className="flex justify-between text-[10px] text-gray-500 mt-1">
-      <span>Jan</span>
-      <span>Feb</span>
-      <span>Mar</span>
-      <span>Apr</span>
-      <span>May</span>
-      <span>Jun</span>
+    <div className="flex justify-between text-[9px] text-gray-500 mt-1">
+      <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
     </div>
   </motion.div>
 );
 
-// Mini Stats Card
-const StatsCard = ({ className = "", label, value, change, icon: Icon }: {
-  className?: string;
-  label: string;
-  value: string;
-  change: string;
+// Mini Sparkline Chart
+const SparklineChart = ({ className = "", color = "purple" }: { className?: string; color?: string }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5, delay: 0.6 }}
+    className={`${className}`}
+  >
+    <svg className="w-full h-10" viewBox="0 0 100 30" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id={`spark-${color}`} x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor={color === "purple" ? "rgba(168,85,247,0.3)" : "rgba(6,182,212,0.3)"} />
+          <stop offset="100%" stopColor="transparent" />
+        </linearGradient>
+      </defs>
+      <motion.path
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={{ pathLength: 1, opacity: 1 }}
+        transition={{ duration: 1, delay: 0.8 }}
+        d="M0,25 Q10,22 20,20 T40,15 T60,18 T80,8 T100,5"
+        fill="none"
+        stroke={color === "purple" ? "#a855f7" : "#06b6d4"}
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <motion.path
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 1 }}
+        d="M0,25 Q10,22 20,20 T40,15 T60,18 T80,8 T100,5 L100,30 L0,30 Z"
+        fill={`url(#spark-${color})`}
+      />
+    </svg>
+  </motion.div>
+);
+
+// KPI Card avec animation
+const KPICard = ({
+  icon: Icon,
+  label,
+  value,
+  change,
+  positive = true,
+  delay = 0,
+  color = "purple"
+}: {
   icon: React.ComponentType<{ className?: string }>;
+  label: string;
+  value: number;
+  change: string;
+  positive?: boolean;
+  delay?: number;
+  color?: string;
 }) => (
   <motion.div
-    initial={{ opacity: 0, scale: 0.8 }}
-    animate={{ opacity: 1, scale: 1 }}
-    transition={{ duration: 0.8, delay: 0.6 }}
-    className={`glass-card rounded-2xl p-4 shadow-2xl ${className}`}
+    initial={{ opacity: 0, y: 30, scale: 0.9 }}
+    animate={{ opacity: 1, y: 0, scale: 1 }}
+    transition={{ duration: 0.5, delay }}
+    whileHover={{ scale: 1.02, y: -2 }}
+    className="glass-card rounded-2xl p-5 shadow-xl relative overflow-hidden group"
   >
-    <div className="flex items-center gap-3">
-      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center">
-        <Icon className="w-5 h-5 text-purple-400" />
+    {/* Glow effect on hover */}
+    <div className={`absolute inset-0 bg-gradient-to-br ${color === "purple" ? "from-purple-600/0 to-pink-600/0 group-hover:from-purple-600/10 group-hover:to-pink-600/10" : "from-cyan-600/0 to-blue-600/0 group-hover:from-cyan-600/10 group-hover:to-blue-600/10"} transition-all duration-300`} />
+
+    <div className="relative z-10">
+      <div className="flex items-center justify-between mb-3">
+        <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${color === "purple" ? "from-purple-500/20 to-pink-500/20" : "from-cyan-500/20 to-blue-500/20"} flex items-center justify-center`}>
+          <Icon className={`w-5 h-5 ${color === "purple" ? "text-purple-400" : "text-cyan-400"}`} />
+        </div>
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: delay + 0.5, type: "spring" }}
+          className={`flex items-center gap-1 text-xs px-2 py-1 rounded-full ${positive ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}
+        >
+          {positive ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
+          {change}
+        </motion.div>
       </div>
-      <div>
-        <p className="text-xs text-gray-500">{label}</p>
-        <p className="text-lg font-bold">{value}</p>
-      </div>
-    </div>
-    <div className="mt-2 flex items-center gap-1">
-      <TrendingUp className="w-3 h-3 text-green-400" />
-      <span className="text-xs text-green-400">{change}</span>
-      <span className="text-xs text-gray-500">vs last month</span>
+      <p className="text-sm text-gray-400 mb-1">{label}</p>
+      <p className="text-3xl font-bold">
+        <AnimatedCounter value={value} duration={1.5} />
+        {label.includes("Rate") && "%"}
+        {label.includes("Revenue") && "K"}
+      </p>
+      <SparklineChart color={color} className="mt-3" />
     </div>
   </motion.div>
 );
 
-// Area Chart mini
-const AreaChartMini = ({ className = "" }: { className?: string }) => (
+// Realtime indicator
+const RealtimeIndicator = () => (
   <motion.div
     initial={{ opacity: 0, scale: 0.8 }}
     animate={{ opacity: 1, scale: 1 }}
-    transition={{ duration: 0.8, delay: 0.7 }}
-    className={`glass-card rounded-2xl p-5 shadow-2xl ${className}`}
+    transition={{ delay: 0.8 }}
+    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-card text-xs"
   >
-    <div className="flex items-center justify-between mb-3">
-      <span className="text-sm text-gray-400">Conversion rate</span>
-      <span className="text-lg font-bold">3.2%</span>
-    </div>
-    <div className="relative h-16">
-      <svg className="w-full h-full" viewBox="0 0 150 50" preserveAspectRatio="none">
-        <defs>
-          <linearGradient id="areaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="rgba(6, 182, 212, 0.4)" />
-            <stop offset="100%" stopColor="rgba(6, 182, 212, 0)" />
-          </linearGradient>
-        </defs>
-        <motion.path
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 1 }}
-          d="M0,40 Q15,35 30,38 T60,30 T90,25 T120,20 T150,10 L150,50 L0,50 Z"
-          fill="url(#areaGradient)"
-        />
-        <motion.path
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: 1.2, delay: 0.9 }}
-          d="M0,40 Q15,35 30,38 T60,30 T90,25 T120,20 T150,10"
-          fill="none"
-          stroke="#06b6d4"
-          strokeWidth="2"
-          strokeLinecap="round"
-        />
-      </svg>
-    </div>
+    <span className="relative flex h-2 w-2">
+      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+      <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
+    </span>
+    <span className="text-gray-300"><AnimatedCounter value={1247} /> users online</span>
   </motion.div>
 );
 
@@ -303,64 +349,72 @@ export default function HomePage() {
     <main className="relative bg-black text-white overflow-hidden">
 
       {/* ===================================================================== */}
-      {/* HERO SECTION - Charts flottants autour du titre */}
+      {/* HERO SECTION */}
       {/* ===================================================================== */}
-      <section className="relative min-h-screen flex items-center justify-center grain-overlay py-12">
-        {/* Background gradient subtil */}
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-black to-pink-900/20" />
+      <section className="relative min-h-screen flex items-center justify-center grain-overlay py-8">
+        {/* Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/30 via-black to-cyan-900/20" />
 
-        {/* Gradient orbs animés */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-pink-600/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-600/10 rounded-full blur-3xl" />
+        {/* Animated gradient orbs */}
+        <motion.div
+          animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+          transition={{ duration: 8, repeat: Infinity }}
+          className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-purple-600/30 rounded-full blur-[120px]"
+        />
+        <motion.div
+          animate={{ scale: [1.2, 1, 1.2], opacity: [0.2, 0.4, 0.2] }}
+          transition={{ duration: 10, repeat: Infinity, delay: 1 }}
+          className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-pink-600/30 rounded-full blur-[100px]"
+        />
+        <motion.div
+          animate={{ scale: [1, 1.3, 1], opacity: [0.2, 0.3, 0.2] }}
+          transition={{ duration: 12, repeat: Infinity, delay: 2 }}
+          className="absolute top-1/2 right-1/3 w-[300px] h-[300px] bg-cyan-600/20 rounded-full blur-[80px]"
+        />
 
-        <div className="relative z-10 w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative z-10 w-full max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8">
 
-          {/* Layout principal avec charts sur les côtés */}
-          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr_280px] xl:grid-cols-[320px_1fr_320px] gap-6 items-center">
+          {/* Layout 3 colonnes - Charts | Content | Charts */}
+          <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr_300px] xl:grid-cols-[340px_1fr_340px] gap-8 items-center">
 
             {/* Colonne gauche - Charts */}
             <div className="hidden lg:flex flex-col gap-5">
               <motion.div
                 animate={{ y: [0, -8, 0] }}
-                transition={{ duration: 4, repeat: Infinity }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
               >
-                <DonutChart className="w-full" />
+                <DonutChart />
               </motion.div>
               <motion.div
                 animate={{ y: [0, 10, 0] }}
-                transition={{ duration: 5, repeat: Infinity, delay: 0.5 }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
               >
-                <BarChart className="w-full" />
+                <BarChartRevenue />
               </motion.div>
             </div>
 
-            {/* Colonne centrale - Titre et CTA */}
-            <div className="text-center py-8">
-              {/* Badge "New" */}
+            {/* Colonne centrale - Hero Content */}
+            <div className="text-center">
+              {/* Realtime badge */}
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-6"
+                className="mb-6"
               >
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-purple-500" />
-                </span>
-                <span className="text-sm text-gray-300">New GA4 templates available</span>
+                <RealtimeIndicator />
               </motion.div>
 
-              {/* Titre principal */}
+              {/* Titre */}
               <motion.h1
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
+                transition={{ delay: 0.1, duration: 0.6 }}
+                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-[1.1]"
               >
-                Upgrade your
+                Transform data into
                 <br />
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 animate-gradient-slow">
-                  reporting today!
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 animate-gradient">
+                  powerful insights
                 </span>
               </motion.h1>
 
@@ -368,44 +422,74 @@ export default function HomePage() {
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="text-lg md:text-xl text-gray-400 mb-8 max-w-lg mx-auto"
+                transition={{ delay: 0.2, duration: 0.6 }}
+                className="text-lg md:text-xl text-gray-400 mb-8 max-w-xl mx-auto leading-relaxed"
               >
-                Try our premium dashboard templates and see the difference. No payment required.
+                Professional dashboard templates that turn your analytics into actionable business decisions.
+                <span className="text-white font-medium"> Setup in 60 seconds.</span>
               </motion.p>
 
-              {/* Boutons CTA */}
+              {/* CTAs */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                className="flex flex-col sm:flex-row items-center justify-center gap-4"
+                transition={{ delay: 0.3, duration: 0.6 }}
+                className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8"
               >
                 <Link
                   href="/products"
-                  className="group px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl font-semibold text-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-300 flex items-center gap-2 animate-soft-glow"
+                  className="group relative px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl font-semibold text-lg overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/30"
                 >
-                  Browse all templates
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  <span className="relative z-10 flex items-center gap-2">
+                    Browse all templates
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </span>
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-purple-700 to-pink-700"
+                    initial={{ x: "100%" }}
+                    whileHover={{ x: 0 }}
+                    transition={{ duration: 0.3 }}
+                  />
                 </Link>
 
                 <Link
                   href="/products/GA4-report-template"
-                  className="group px-8 py-4 glass-card glass-card-hover rounded-2xl font-semibold text-lg transition-all duration-300 flex items-center gap-2 border border-cyan-500/30 hover:border-cyan-500/60"
+                  className="group px-8 py-4 glass-card rounded-2xl font-semibold text-lg transition-all duration-300 flex items-center gap-3 border border-white/10 hover:border-cyan-500/50 hover:shadow-lg hover:shadow-cyan-500/20"
                 >
-                  <span className="w-3 h-3 rounded-full bg-cyan-400 animate-pulse"></span>
+                  <motion.span
+                    animate={{ scale: [1, 1.2, 1] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                    className="w-10 h-10 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center"
+                  >
+                    <Play className="w-4 h-4 ml-0.5" fill="white" />
+                  </motion.span>
                   See Live Demo
                 </Link>
               </motion.div>
 
-              {/* Trust badge */}
+              {/* Trust indicators */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.8 }}
-                className="mt-8 text-sm text-gray-500"
+                transition={{ delay: 0.6 }}
+                className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-500"
               >
-                Trusted by <span className="text-white font-semibold">1,000+</span> marketers worldwide
+                {[
+                  { icon: Check, text: "No credit card" },
+                  { icon: Zap, text: "Instant setup" },
+                  { icon: Shield, text: "Secure & private" },
+                ].map((item, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.7 + i * 0.1 }}
+                    className="flex items-center gap-2"
+                  >
+                    <item.icon className="w-4 h-4 text-green-400" />
+                    <span>{item.text}</span>
+                  </motion.div>
+                ))}
               </motion.div>
             </div>
 
@@ -413,45 +497,53 @@ export default function HomePage() {
             <div className="hidden lg:flex flex-col gap-5">
               <motion.div
                 animate={{ y: [0, 10, 0] }}
-                transition={{ duration: 4.5, repeat: Infinity, delay: 0.3 }}
+                transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
               >
-                <LineChartWidget className="w-full" />
+                <LineChartSessions />
               </motion.div>
+
+              {/* Mini stat card */}
               <motion.div
-                animate={{ y: [0, -6, 0] }}
-                transition={{ duration: 3.5, repeat: Infinity, delay: 0.7 }}
+                initial={{ opacity: 0, scale: 0.8, x: 30 }}
+                animate={{ opacity: 1, scale: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.5 }}
+                whileHover={{ scale: 1.02 }}
+                className="glass-card rounded-2xl p-5 shadow-2xl shadow-cyan-500/10"
               >
-                <AreaChartMini className="w-full" />
+                <div className="flex items-center gap-4">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-green-500/20 to-emerald-500/20 flex items-center justify-center">
+                    <TrendingUp className="w-7 h-7 text-green-400" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-400">Conversion Rate</p>
+                    <p className="text-3xl font-bold"><AnimatedCounter value={4} suffix="." /><AnimatedCounter value={8} suffix="%" /></p>
+                  </div>
+                </div>
+                <div className="mt-4 h-2 bg-white/5 rounded-full overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: "78%" }}
+                    transition={{ duration: 1.5, delay: 0.8, ease: "easeOut" }}
+                    className="h-full bg-gradient-to-r from-green-500 to-emerald-400 rounded-full"
+                  />
+                </div>
               </motion.div>
             </div>
           </div>
 
-          {/* Stats cards en dessous - version mobile visible */}
-          <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4 lg:hidden">
-            <StatsCard label="Sessions" value="33.4K" change="+12%" icon={Activity} />
-            <StatsCard label="Revenue" value="$16.4K" change="+8%" icon={BarChart3} />
-          </div>
-
-          {/* Éléments décoratifs flottants */}
+          {/* KPI Cards - Below hero */}
           <motion.div
-            animate={{ y: [0, -15, 0], rotate: [0, 5, 0] }}
-            transition={{ duration: 6, repeat: Infinity }}
-            className="absolute top-20 left-[5%] hidden xl:block"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.6 }}
+            className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4"
           >
-            <div className="glass-card rounded-xl p-3">
-              <BarChart3 className="w-6 h-6 text-purple-400" />
-            </div>
+            <KPICard icon={Users} label="Total Users" value={284567} change="+12.5%" delay={0.6} color="purple" />
+            <KPICard icon={Eye} label="Page Views" value={1847293} change="+8.2%" delay={0.7} color="cyan" />
+            <KPICard icon={MousePointerClick} label="Click Rate" value={3} change="+15.3%" delay={0.8} color="purple" positive />
+            <KPICard icon={DollarSign} label="Revenue" value={89} change="+22.1%" delay={0.9} color="cyan" />
           </motion.div>
 
-          <motion.div
-            animate={{ y: [0, 12, 0], rotate: [0, -5, 0] }}
-            transition={{ duration: 5, repeat: Infinity, delay: 1 }}
-            className="absolute bottom-32 right-[5%] hidden xl:block"
-          >
-            <div className="glass-card rounded-xl p-3">
-              <Activity className="w-6 h-6 text-cyan-400" />
-            </div>
-          </motion.div>
         </div>
 
         {/* Scroll indicator */}
@@ -461,23 +553,25 @@ export default function HomePage() {
           transition={{ delay: 1.5 }}
           className="absolute bottom-6 left-1/2 -translate-x-1/2"
         >
-          <div className="w-6 h-10 border-2 border-white/20 rounded-full p-1">
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+            className="w-6 h-10 border-2 border-white/20 rounded-full p-1 cursor-pointer hover:border-white/40 transition-colors"
+          >
             <motion.div
-              animate={{ y: [0, 12, 0] }}
+              animate={{ y: [0, 12, 0], opacity: [1, 0.5, 1] }}
               transition={{ duration: 1.5, repeat: Infinity }}
-              className="w-1 h-3 bg-white/30 rounded-full mx-auto"
+              className="w-1 h-3 bg-white/50 rounded-full mx-auto"
             />
-          </div>
+          </motion.div>
         </motion.div>
       </section>
 
       {/* ===================================================================== */}
-      {/* FEATURES SECTION - Cards avec glassmorphism */}
+      {/* FEATURES SECTION */}
       {/* ===================================================================== */}
       <section className="relative py-32 grain-overlay">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-          {/* Titre section */}
           <div className="text-center mb-20">
             <motion.p
               initial={{ opacity: 0 }}
@@ -499,56 +593,16 @@ export default function HomePage() {
                 zero complexity
               </span>
             </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="text-xl text-gray-400 max-w-2xl mx-auto"
-            >
-              Transform your data into actionable insights in minutes.
-            </motion.p>
           </div>
 
-          {/* Grid de features */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              {
-                icon: Zap,
-                title: "One-Click Setup",
-                description: "Connect your data source and go live in under 60 seconds. No technical skills required.",
-                color: "from-yellow-500 to-orange-500"
-              },
-              {
-                icon: Palette,
-                title: "Beautiful Design",
-                description: "Professionally crafted visualizations that make your data shine.",
-                color: "from-purple-500 to-pink-500"
-              },
-              {
-                icon: LineChart,
-                title: "50+ Visualizations",
-                description: "Charts, tables, KPIs, and more. All key metrics in one comprehensive view.",
-                color: "from-cyan-500 to-blue-500"
-              },
-              {
-                icon: Shield,
-                title: "Real-time Updates",
-                description: "Always connected to your live data. See changes as they happen.",
-                color: "from-green-500 to-cyan-500"
-              },
-              {
-                icon: Smartphone,
-                title: "Fully Responsive",
-                description: "Review your performance on any device - desktop, tablet, or mobile.",
-                color: "from-pink-500 to-rose-500"
-              },
-              {
-                icon: Code2,
-                title: "Fully Customizable",
-                description: "Match your brand colors, add custom metrics, make it yours.",
-                color: "from-blue-500 to-indigo-500"
-              },
+              { icon: Zap, title: "One-Click Setup", description: "Connect your data source and go live in under 60 seconds.", color: "from-yellow-500 to-orange-500" },
+              { icon: Palette, title: "Beautiful Design", description: "Professionally crafted visualizations that make your data shine.", color: "from-purple-500 to-pink-500" },
+              { icon: LineChart, title: "50+ Visualizations", description: "Charts, tables, KPIs, and more in one comprehensive view.", color: "from-cyan-500 to-blue-500" },
+              { icon: Shield, title: "Real-time Updates", description: "Always connected to your live data. See changes instantly.", color: "from-green-500 to-cyan-500" },
+              { icon: Smartphone, title: "Fully Responsive", description: "Review performance on any device - desktop, tablet, or mobile.", color: "from-pink-500 to-rose-500" },
+              { icon: Code2, title: "Fully Customizable", description: "Match your brand colors, add custom metrics, make it yours.", color: "from-blue-500 to-indigo-500" },
             ].map((feature, index) => (
               <motion.div
                 key={index}
@@ -556,87 +610,14 @@ export default function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="group spotlight-card glass-card glass-card-hover rounded-3xl p-8 transition-all duration-300 hover:scale-105"
+                whileHover={{ scale: 1.03, y: -5 }}
+                className="group glass-card glass-card-hover rounded-3xl p-8 transition-all duration-300"
               >
                 <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${feature.color} p-3 mb-6 group-hover:scale-110 transition-transform`}>
                   <feature.icon className="w-full h-full text-white" />
                 </div>
                 <h3 className="text-2xl font-semibold mb-3">{feature.title}</h3>
                 <p className="text-gray-400 leading-relaxed">{feature.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ===================================================================== */}
-      {/* STEPS SECTION - Trois étapes simples */}
-      {/* ===================================================================== */}
-      <section className="relative py-32">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-          <div className="text-center mb-20">
-            <motion.p
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              className="text-sm uppercase tracking-wider text-purple-400 mb-4"
-            >
-              How it works
-            </motion.p>
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-4xl md:text-5xl font-bold"
-            >
-              Three simple steps to
-              <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
-                powerful reporting
-              </span>
-            </motion.h2>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-12">
-            {[
-              {
-                number: "1",
-                title: "Choose your template",
-                description: "Browse our collection of professionally designed dashboard templates for GA4, Looker Studio, and more.",
-                icon: BarChart3
-              },
-              {
-                number: "2",
-                title: "Connect your data",
-                description: "Link your data sources with one click. Our templates auto-configure to match your metrics.",
-                icon: Activity
-              },
-              {
-                number: "3",
-                title: "Share insights",
-                description: "Export, embed, or share live links. Empower your team with actionable intelligence.",
-                icon: TrendingUp
-              }
-            ].map((step, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.2 }}
-                className="text-center"
-              >
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-600/20 to-pink-600/20 border border-purple-500/30 mb-6">
-                  <span className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
-                    {step.number}
-                  </span>
-                </div>
-                <div className="glass-card rounded-3xl p-8 h-full">
-                  <step.icon className="w-12 h-12 text-purple-400 mx-auto mb-4" />
-                  <h3 className="text-2xl font-semibold mb-4">{step.title}</h3>
-                  <p className="text-gray-400">{step.description}</p>
-                </div>
               </motion.div>
             ))}
           </div>
@@ -652,53 +633,45 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="glass-card rounded-3xl p-16 relative overflow-hidden"
+            className="glass-card rounded-3xl p-12 md:p-16 relative overflow-hidden"
           >
-            {/* Background gradient */}
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-900/30 via-transparent to-cyan-900/30" />
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-900/40 via-transparent to-cyan-900/40" />
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              className="absolute -top-20 -right-20 w-40 h-40 bg-purple-500/20 rounded-full blur-3xl"
+            />
+            <motion.div
+              animate={{ rotate: -360 }}
+              transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+              className="absolute -bottom-20 -left-20 w-40 h-40 bg-cyan-500/20 rounded-full blur-3xl"
+            />
 
             <div className="relative z-10">
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                Ready to transform
+              <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="text-4xl md:text-5xl font-bold mb-6"
+              >
+                Ready to upgrade
                 <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400">
                   your reporting?
                 </span>
-              </h2>
+              </motion.h2>
               <p className="text-xl text-gray-400 mb-10 max-w-2xl mx-auto">
-                Join thousands of marketers and analysts who use DashKit to create stunning, actionable dashboards.
+                Join <span className="text-white font-semibold">1,000+</span> marketers creating stunning dashboards with DashKit.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Link
-                  href="/products"
-                  className="group px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl font-semibold text-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-300 flex items-center gap-2"
-                >
+                <Link href="/products" className="group px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl font-semibold text-lg hover:shadow-lg hover:shadow-purple-500/30 transition-all duration-300 flex items-center gap-2">
                   Browse all templates
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
-                <Link
-                  href="/products/GA4-report-template"
-                  className="px-8 py-4 glass-card glass-card-hover rounded-2xl font-semibold text-lg transition-all duration-300 flex items-center gap-2 border border-cyan-500/30"
-                >
-                  <span className="w-3 h-3 rounded-full bg-cyan-400 animate-pulse"></span>
+                <Link href="/products/GA4-report-template" className="px-8 py-4 glass-card rounded-2xl font-semibold text-lg transition-all duration-300 flex items-center gap-2 border border-cyan-500/30 hover:border-cyan-500/60">
+                  <Play className="w-4 h-4" fill="currentColor" />
                   See Live Demo
                 </Link>
-              </div>
-
-              {/* Trust badges */}
-              <div className="mt-12 flex flex-wrap items-center justify-center gap-8 text-sm text-gray-500">
-                <div className="flex items-center gap-2">
-                  <Check className="w-4 h-4 text-green-400" />
-                  <span>No credit card required</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Check className="w-4 h-4 text-green-400" />
-                  <span>Free demo available</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Check className="w-4 h-4 text-green-400" />
-                  <span>Setup in 60 seconds</span>
-                </div>
               </div>
             </div>
           </motion.div>
