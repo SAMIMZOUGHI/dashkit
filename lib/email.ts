@@ -26,7 +26,7 @@ export async function sendPurchaseEmail({
     const { data, error } = await resend.emails.send({
       from: "DashKit <hello@dashkit.online>", // Change avec ton domaine vérifié
       to: [to],
-      subject: `🎉 Votre achat : ${productName}`,
+      subject: `🎉 Your purchase: ${productName}`,
       html: `
 <!DOCTYPE html>
 <html>
@@ -39,48 +39,48 @@ export async function sendPurchaseEmail({
     
     <!-- Header -->
     <div style="background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%); padding: 40px 30px; text-align: center;">
-      <h1 style="color: white; margin: 0; font-size: 28px;">🎉 Merci pour votre achat !</h1>
+      <h1 style="color: white; margin: 0; font-size: 28px;">🎉 Thank you for your purchase!</h1>
     </div>
     
     <!-- Content -->
     <div style="padding: 40px 30px;">
       <p style="font-size: 16px; color: #3f3f46; margin: 0 0 20px;">
-        Bonjour${customerName ? ` ${customerName}` : ""} !
+        Hello${customerName ? ` ${customerName}` : ""} !
       </p>
       
       <p style="font-size: 16px; color: #3f3f46; margin: 0 0 30px;">
-        Votre achat de <strong>${productName}</strong> a été confirmé. Vous pouvez maintenant télécharger votre template.
+        Your purchase of <strong>${productName}</strong> has been confirmed. You can now download your template.
       </p>
       
       <!-- Download Button -->
       <div style="text-align: center; margin: 40px 0;">
         <a href="${downloadUrl}" 
            style="display: inline-block; background: #18181b; color: white; padding: 16px 32px; font-size: 16px; font-weight: 600; text-decoration: none; border-radius: 8px;">
-          📥 Télécharger mon template
+          📥 Download my template
         </a>
       </div>
       
       <!-- Order Details -->
       <div style="background: #f4f4f5; border-radius: 8px; padding: 20px; margin: 30px 0;">
-        <h3 style="margin: 0 0 15px; color: #18181b; font-size: 14px; text-transform: uppercase;">Détails de la commande</h3>
+        <h3 style="margin: 0 0 15px; color: #18181b; font-size: 14px; text-transform: uppercase;">Order Details</h3>
         <p style="margin: 5px 0; color: #52525b; font-size: 14px;">
-          <strong>Produit :</strong> ${productName}
+          <strong>Product:</strong> ${productName}
         </p>
         <p style="margin: 5px 0; color: #52525b; font-size: 14px;">
-          <strong>Référence :</strong> ${orderReference}
+          <strong>Reference:</strong> ${orderReference}
         </p>
       </div>
       
       <!-- Help -->
       <p style="font-size: 14px; color: #71717a; margin: 30px 0 0;">
-        Un problème ? Répondez simplement à cet email, nous vous aiderons rapidement.
+        Having trouble? Just reply to this email, and we'll help you out quickly.
       </p>
     </div>
     
     <!-- Footer -->
     <div style="background: #f4f4f5; padding: 20px 30px; text-align: center;">
       <p style="margin: 0; color: #71717a; font-size: 12px;">
-        © 2024 DashKit. Tous droits réservés.
+        © 2026 DashKit. All rights reserved.
       </p>
     </div>
     
@@ -91,14 +91,14 @@ export async function sendPurchaseEmail({
     });
 
     if (error) {
-      console.error("❌ Erreur envoi email:", error);
+      console.error("❌ Error sending email:", error);
       return { success: false, error };
     }
 
-    console.log("✅ Email envoyé:", data?.id);
+    console.log("✅ Email sent:", data?.id);
     return { success: true, data };
   } catch (error) {
-    console.error("❌ Erreur envoi email:", error);
+    console.error("❌ Error sending email:", error);
     return { success: false, error };
   }
 }
