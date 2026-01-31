@@ -69,6 +69,8 @@ Our Google Analytics 4 Report Template solves this instantly:
 
     demoUrl: "https://lookerstudio.google.com/embed/reporting/8fdbdf91-0df4-4c54-a4e2-10c8c3935971/page/tEnnC",
 
+    demoIframe: '<iframe width="600" height="338" src="https://lookerstudio.google.com/embed/reporting/543a505c-2ab4-4ff4-a0e6-c50f374a8e4a/page/6BShF" frameborder="0" style="border:0" allowfullscreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>',
+
     features: [
       "One click setup",
       "Engagement metrics & analysis",
@@ -98,39 +100,44 @@ Our Google Analytics 4 Report Template solves this instantly:
 // -----------------------------------------------------------------------------
 
   {
-    id: "admin-panel-nextjs",
-    slug: "admin-panel-nextjs",
-    name: "NextJS Admin Panel",
+    id: "GA4 Ecommerce Report Template",
+    slug: "GA4-ecommerce-report-template",
+    name: "Google Analytics 4 Ecommerce Report Template",
     shortDescription: 
-      "Panel d'administration complet avec authentification et gestion CRUD",
+      "Google Analytics 4 professional reporting template built for Ecommerce.",
     longDescription: `
-# NextJS Admin Panel
+A premium dashboard template designed by BI professionals.
 
-Un template de **panel d'administration** professionnel avec toutes les fonctionnalités essentielles.
+Our Google Analytics 4 Report Template solves this instantly:
 
-## Ce qui est inclus :
+- ⚡ Setup in under 60 seconds — No technical skills required
+- 📊 50+ pre-built visualizations — All key metrics in one view
+- 🎯 Actionable insights — Not just data, but answers to business questions
+- 🔄 Real-time updates — Always connected to your live GA4 property
+- 📱 Mobile-responsive — Review performance on any device
+- 🎨 Fully customizable — Match your brand colors and metrics
 
-- ✅ Authentification NextAuth (email, Google, GitHub)
-- ✅ Gestion des rôles et permissions
-- ✅ CRUD complet pour utilisateurs, produits, commandes
-- ✅ Tables de données avec tri, filtres et pagination
-- ✅ Formulaires de validation avec React Hook Form
-- ✅ Dashboard avec statistiques et graphiques
 
-## Technologies :
+## Perfect For These Professionals:
 
-Built avec **Next.js 14**, **NextAuth**, **Prisma**, et **Tailwind CSS**.
+- 🎯 SEO Specialists optimizing organic search performance
+- 🛒 Ecommerce Managers tracking product and revenue metrics
+- 📈 Growth Marketers running multi-channel campaigns
+- 💼 Marketing Consultants delivering client reports
+- 🚀 SaaS Founders monitoring user acquisition funnels
+- 📊 Data Analysts visualizing GA4 insights for stakeholders
+- 🏢 Agency Teams managing multiple client properties
+- 📝 Content Marketers measuring content ROI
+- 🎨 Product Managers understanding user behavior
+- 💡 Business Owners making data-driven decisions
 
-## Mises à jour : 
-
-Accès à vie aux mises à jour futures du template.
     `.trim(),
 
-    price: 5900, // 59,00€
+    price: 25900, // 259,00€
     currency: "EUR",
 
     images: {
-      thumbnail: "/images/products/admin-panel-nextjs/thumbnail.png",
+      thumbnail: "/images/products/ga4-ecommerce-report-template/thumbnail.png",
       gallery: [
         "/images/products/admin-panel-nextjs/screenshot-1.png",
         "/images/products/admin-panel-nextjs/screenshot-2.png",

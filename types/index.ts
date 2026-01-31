@@ -41,6 +41,9 @@ export interface Product {
   // URL de la démo live du dashboard
   demoUrl: string;
 
+  // Code HTML de l'iframe pour la démo intégrée (optionnel)
+  demoIframe?: string;
+
   // Fonctionnalités du template
   features: string[];
 

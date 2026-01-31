@@ -79,8 +79,7 @@ export default function ProductDetailPage({
 
             {/* Bouton démo */}
             <Link
-              href={product.demoUrl}
-              target="_blank"
+              href={`/products/${slug}/demo`}
               className="flex items-center justify-center gap-2 w-full py-4 glass-card glass-card-hover rounded-2xl font-semibold transition-all duration-300"
             >
               <ExternalLink className="w-5 h-5" />
