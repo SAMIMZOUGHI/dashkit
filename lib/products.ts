@@ -16,64 +16,80 @@ import { Product } from "@/types";
 // -----------------------------------------------------------------------------
 export const products: Product[] = [
   {
-    id: "lookze-pro",
-    slug: "lookze-pro",
-    name: "Lookze Pro Dashboard",
+    id: "GA4 Report Template",
+    slug: "GA4-report-template",
+    name: "Google Analytics 4 Report Template",
     shortDescription: 
-      "Template de dashboard moderne et complet pour applications SaaS",
+      "Google Analytics 4 professional reporting template built for performance.",
     longDescription: `
-# Lookze Pro Dashboard
 
-Un template de dashboard **premium** conçu pour les applications SaaS modernes.
+A premium dashboard template designed by BI professionals.
 
-## Ce qui est inclus :
+Our Google Analytics 4 Report Template solves this instantly:
 
-- ✅ Plus de 50 composants UI prêts à l'emploi
-- ✅ Mode sombre/clair automatique
-- ✅ Responsive (mobile, tablette, desktop)
-- ✅ Graphiques et visualisations de données
-- ✅ Documentation complète
+- ⚡ Setup in under 60 seconds — No technical skills required
+- 📊 50+ pre-built visualizations — All key metrics in one view
+- 🎯 Actionable insights — Not just data, but answers to business questions
+- 🔄 Real-time updates — Always connected to your live GA4 property
+- 📱 Mobile-responsive — Review performance on any device
+- 🎨 Fully customizable — Match your brand colors and metrics
 
-## Mises à jour : 
 
-Accès à vie aux mises à jour futures du template. 
+## Perfect For These Professionals:
+
+- 🎯 SEO Specialists optimizing organic search performance
+- 🛒 Ecommerce Managers tracking product and revenue metrics
+- 📈 Growth Marketers running multi-channel campaigns
+- 💼 Marketing Consultants delivering client reports
+- 🚀 SaaS Founders monitoring user acquisition funnels
+- 📊 Data Analysts visualizing GA4 insights for stakeholders
+- 🏢 Agency Teams managing multiple client properties
+- 📝 Content Marketers measuring content ROI
+- 🎨 Product Managers understanding user behavior
+- 💡 Business Owners making data-driven decisions
+
+ 
     `.trim(),
 
-    price: 4900, // 49,00€
+    price: 24900, // 249,00€
     currency: "EUR",
 
     images: {
-      thumbnail: "/images/products/lookze-pro/thumbnail.png",
+      thumbnail: "https://ztlejgzielmkpusfrqpi.supabase.co/storage/v1/object/public/products/Google%20Analytics%204%20Report%20Template/DEMO_-_Google_Analytics_4_Report_Template_pages-to-jpg-0005.jpg",
       gallery: [
-        "/images/products/lookze-pro/screenshot-1.png",
-        "/images/products/lookze-pro/screenshot-2.png",
-        "/images/products/lookze-pro/screenshot-3.png",
+        "https://ztlejgzielmkpusfrqpi.supabase.co/storage/v1/object/public/products/Google%20Analytics%204%20Report%20Template/DEMO_-_Google_Analytics_4_Report_Template_pages-to-jpg-0005.jpg",
+        "https://ztlejgzielmkpusfrqpi.supabase.co/storage/v1/object/public/products/Google%20Analytics%204%20Report%20Template/DEMO_-_Google_Analytics_4_Report_Template_pages-to-jpg-0001.jpg",
+        "https://ztlejgzielmkpusfrqpi.supabase.co/storage/v1/object/public/products/Google%20Analytics%204%20Report%20Template/DEMO_-_Google_Analytics_4_Report_Template_pages-to-jpg-0004.jpg",
+        "https://ztlejgzielmkpusfrqpi.supabase.co/storage/v1/object/public/products/Google%20Analytics%204%20Report%20Template/DEMO_-_Google_Analytics_4_Report_Template_pages-to-jpg-0007.jpg",
+        "https://ztlejgzielmkpusfrqpi.supabase.co/storage/v1/object/public/products/Google%20Analytics%204%20Report%20Template/DEMO_-_Google_Analytics_4_Report_Template_pages-to-jpg-0009.jpg",
+        "https://ztlejgzielmkpusfrqpi.supabase.co/storage/v1/object/public/products/Google%20Analytics%204%20Report%20Template/DEMO_-_Google_Analytics_4_Report_Template_pages-to-jpg-0011.jpg",
+        "https://ztlejgzielmkpusfrqpi.supabase.co/storage/v1/object/public/products/Google%20Analytics%204%20Report%20Template/DEMO_-_Google_Analytics_4_Report_Template_pages-to-jpg-0012.jpg"
       ],
     },
 
     demoUrl: "https://lookerstudio.google.com/embed/reporting/8fdbdf91-0df4-4c54-a4e2-10c8c3935971/page/tEnnC",
 
     features: [
-      "50+ composants UI",
-      "Mode sombre/clair",
-      "100% Responsive",
-      "Graphiques interactifs",
-      "Documentation complète",
-      "Support 6 mois",
-      "Mises à jour à vie",
+      "One click setup",
+      "Engagement metrics & analysis",
+      "User acquisition & behavior insights",
+      "Revenue & conversion tracking",
+      "Customizable components",
+      "Data visualizations design",
+      "Comprehensive glossary",
     ],
 
-    technologies: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
+    technologies: ["GA4", "Google Analytics 4", "Looker Studio", "Google Data Studio"],
 
     stripePriceId: "price_1Ss9VnGUPJVKIAR18zB05e8k",
 
     downloadFile: "https://storage.dashkit.online/downloads/lookze-pro-v1.zip",
 
     seo: {
-      title: "Lookze Pro Dashboard - Template Premium | DashKit",
+      title: "Google Analytics 4 Report Template - Professional BI for Non-technical teams | DashKit",
       description: 
         "Template de dashboard moderne avec 50+ composants. Parfait pour votre application SaaS.",
-      keywords: ["dashboard template", "next.js dashboard", "react dashboard"],
+      keywords: ["dashboard template", "Looker dashboard", "Looker Studio dashboard", "GA4 report template", "Google Analytics 4 template"] ,
     },
   },
 

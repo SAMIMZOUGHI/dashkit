@@ -41,16 +41,16 @@ export default function CheckoutPage() {
         const data = await response.json();
 
         if (!response.ok) {
-          throw new Error(data.error || "Erreur lors du paiement");
+          throw new Error(data.error || "Payment error");
         }
 
-        // Rediriger vers Stripe
+        // Redirect to Stripe
         if (data.url) {
           window.location.href = data.url;
         }
       } catch (err) {
-        console.error("Erreur checkout:", err);
-        setError(err instanceof Error ? err.message : "Une erreur est survenue");
+        console.error("Checkout error:", err);
+        setError(err instanceof Error ? err.message : "An error occurred");
         setIsLoading(false);
       }
     };
@@ -58,7 +58,7 @@ export default function CheckoutPage() {
     createCheckoutSession();
   }, [items, router]);
 
-  // Affichage erreur
+  // Display error
   if (error) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center px-4 grain-overlay">
@@ -70,19 +70,19 @@ export default function CheckoutPage() {
           <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-red-600/20 border-2 border-red-500/30 mb-6">
             <AlertCircle className="w-10 h-10 text-red-400" />
           </div>
-          <h2 className="text-3xl font-bold text-white mb-4">Erreur de paiement</h2>
+          <h2 className="text-3xl font-bold text-white mb-4">Payment error</h2>
           <p className="text-gray-400 mb-8">{error}</p>
           <button
             onClick={() => router.push("/cart")}
             className="w-full py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl font-semibold hover:from-purple-700 hover:to-pink-700 transition-all duration-300"
           >
-            Retour au panier
+            Back to cart
           </button>
         </motion.div>
       </div>
     );
   }
 
-  // Affichage loading (composant de loading sera utilisé automatiquement)
+  // Display loading (loading component will be used automatically)
   return null;
 }

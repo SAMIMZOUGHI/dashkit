@@ -51,7 +51,7 @@ export default function ProductDetailPage({
           className="flex items-center gap-2 text-sm text-gray-400 mb-12"
         >
           <Link href="/" className="hover:text-white transition-colors">
-            Accueil
+            Home
           </Link>
           <span>/</span>
           <Link href="/products" className="hover:text-white transition-colors">
@@ -85,7 +85,7 @@ export default function ProductDetailPage({
               className="flex items-center justify-center gap-2 w-full py-4 glass-card glass-card-hover rounded-2xl font-semibold transition-all duration-300"
             >
               <ExternalLink className="w-5 h-5" />
-              Voir la démo live
+              See Live Demo
             </Link>
           </motion.div>
 
@@ -119,22 +119,22 @@ export default function ProductDetailPage({
             <div className="glass-card rounded-2xl p-6 mb-8">
               <div className="flex items-baseline gap-3 mb-4">
                 <span className="text-5xl font-bold">{product.price / 100}€</span>
-                <span className="text-gray-400">paiement unique</span>
+                <span className="text-gray-400">one-time payment</span>
               </div>
               <button
                 onClick={handleAddToCart}
                 className="w-full py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl font-semibold text-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-300 animate-soft-glow"
               >
-                Ajouter au panier
+                Add to Cart
               </button>
               <p className="text-center text-sm text-gray-500 mt-4">
-                Téléchargement instantané après paiement
+                Instant download after payment
               </p>
             </div>
 
-            {/* Ce qui est inclus */}
+            {/* What's Included */}
             <div className="glass-card rounded-2xl p-6 mb-8">
-              <h3 className="text-xl font-semibold mb-4">Ce qui est inclus :</h3>
+              <h3 className="text-xl font-semibold mb-4">What's Included:</h3>
               <ul className="space-y-3">
                 {product.features.map((feature, index) => (
                   <li key={index} className="flex items-start gap-3">

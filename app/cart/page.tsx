@@ -30,9 +30,9 @@ export default function CartPage() {
           animate={{ opacity: 1, y: 0 }}
           className="mb-12"
         >
-          <h1 className="text-5xl font-bold mb-4">Votre panier</h1>
+          <h1 className="text-5xl font-bold mb-4">Your cart</h1>
           <p className="text-xl text-gray-400">
-            {items.length} {items.length > 1 ? "articles" : "article"}
+            {items.length} {items.length > 1 ? "items" : "item"}
           </p>
         </motion.div>
 
@@ -45,24 +45,24 @@ export default function CartPage() {
           >
             <div className="glass-card rounded-3xl p-16 max-w-2xl mx-auto">
               <ShoppingBag className="w-20 h-20 text-gray-600 mx-auto mb-6" />
-              <h2 className="text-3xl font-bold mb-4">Votre panier est vide</h2>
+              <h2 className="text-3xl font-bold mb-4">Your cart is empty</h2>
               <p className="text-gray-400 mb-8">
-                Découvrez nos templates premium et commencez à créer dès maintenant
+                Discover our premium templates and start building now
               </p>
               <Link
                 href="/products"
                 className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl font-semibold hover:from-purple-700 hover:to-pink-700 transition-all duration-300"
               >
-                Voir les templates
+                View templates
                 <ArrowRight className="w-5 h-5" />
               </Link>
             </div>
           </motion.div>
         ) : (
-          /* Panier avec articles */
+          /* Cart with items */
           <div className="grid lg:grid-cols-3 gap-8">
             
-            {/* Liste des articles */}
+            {/* List of items */}
             <div className="lg:col-span-2 space-y-4">
               {items.map((item, index) => (
                 <motion.div
@@ -91,7 +91,7 @@ export default function CartPage() {
                     </div>
                   </div>
 
-                  {/* Supprimer */}
+                  {/* Remove */}
                   <button
                     onClick={() => removeItem(item.product.id)}
                     className="p-3 hover:bg-red-500/20 rounded-xl transition-colors text-red-400"
@@ -102,22 +102,22 @@ export default function CartPage() {
               ))}
             </div>
 
-            {/* Récapitulatif */}
+            {/* Summary */}
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               className="lg:sticky lg:top-32 h-fit"
             >
               <div className="glass-card rounded-2xl p-6">
-                <h3 className="text-2xl font-semibold mb-6">Récapitulatif</h3>
+                <h3 className="text-2xl font-semibold mb-6">Summary</h3>
 
                 <div className="space-y-4 mb-6">
                   <div className="flex justify-between text-gray-400">
-                    <span>Sous-total</span>
+                    <span>Subtotal</span>
                     <span>{formatPrice(getTotalPrice, "EUR")}</span>
                   </div>
                   <div className="flex justify-between text-gray-400">
-                    <span>TVA (20%)</span>
+                    <span>VAT (20%)</span>
                     <span>{formatPrice(getTotalPrice * 0.2, "EUR")}</span>
                   </div>
                   <div className="pt-4 border-t border-white/10">
@@ -132,29 +132,29 @@ export default function CartPage() {
                   href="/checkout"
                   className="block w-full py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl font-semibold text-center hover:from-purple-700 hover:to-pink-700 transition-all duration-300 mb-4"
                 >
-                  Procéder au paiement
+                  Proceed to checkout
                 </Link>
 
                 <Link
                   href="/products"
                   className="block w-full py-4 glass-card glass-card-hover rounded-2xl font-semibold text-center transition-all duration-300"
                 >
-                  Continuer mes achats
+                  Continue shopping
                 </Link>
 
-                {/* Garanties */}
+                {/* Guarantees */}
                 <div className="mt-6 pt-6 border-t border-white/10 space-y-3 text-sm text-gray-400">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-green-500 rounded-full" />
-                    <span>Paiement 100% sécurisé</span>
+                    <span>100% secure payment</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-green-500 rounded-full" />
-                    <span>Téléchargement instantané</span>
+                    <span>Instant download</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-green-500 rounded-full" />
-                    <span>Garantie satisfait ou remboursé 14j</span>
+                    <span>14-day money-back guarantee</span>
                   </div>
                 </div>
               </div>
