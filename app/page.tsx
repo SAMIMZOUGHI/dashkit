@@ -316,10 +316,10 @@ export default function HomePage() {
               transition={{ delay: 0.1 }}
               className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
             >
-              Upgrade your reporting
+              Turn your data into
               <br />
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 animate-gradient-slow">
-                today!
+                Pure Visual Gold
               </span>
             </motion.h1>
  
@@ -330,9 +330,9 @@ export default function HomePage() {
               transition={{ delay: 0.2 }}
               className="text-xl md:text-2xl text-gray-400 mb-10 max-w-2xl mx-auto"
             >
-              Try our premium dashboard templates and see the difference.
+              Premium dashboard templates created by BI professionals 
               <br className="hidden md:block" />
-              No payment required.
+              
             </motion.p>
  
             {/* Boutons CTA */}
@@ -587,7 +587,7 @@ export default function HomePage() {
               Three simple steps to
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
-                powerful reporting
+                create your dashboard
               </span>
             </motion.h2>
           </div>
