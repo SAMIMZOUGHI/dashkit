@@ -8,6 +8,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { getAllProducts } from "@/lib/products";
+import Image from "next/image";
 import { Star, ArrowRight, Sparkles } from "lucide-react";
 
 export default function ProductsPage() {
@@ -69,14 +70,26 @@ export default function ProductsPage() {
                 <div className="spotlight-card glass-card glass-card-hover rounded-3xl overflow-hidden transition-all duration-300 hover:scale-105">
                   
                   {/* Image */}
-                  <div className="aspect-video bg-gradient-to-br from-purple-900/40 via-black to-pink-900/40 relative overflow-hidden">
-                    <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:30px_30px]" />
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <Sparkles className="w-16 h-16 text-purple-400/50" />
-                    </div>
-                    
+                  <div className="aspect-video relative overflow-hidden bg-zinc-900">
+                    {product.images.thumbnail ? (
+                      <Image
+                        src={product.images.thumbnail}
+                        alt={product.name}
+                        fill
+                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                    ) : (
+                      <>
+                        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/40 via-black to-pink-900/40" />
+                        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:30px_30px]" />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <Sparkles className="w-16 h-16 text-purple-400/50" />
+                        </div>
+                      </>
+                    )}
+
                     {/* Badge "New" si applicable */}
-                    <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 text-xs font-semibold">
+                    <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 text-xs font-semibold z-10">
                       New
                     </div>
                   </div>
