@@ -83,7 +83,7 @@ Our Google Analytics 4 Report Template solves this instantly:
 
     technologies: ["GA4", "Google Analytics 4", "Looker Studio", "Google Data Studio"],
 
-    stripePriceId: "price_1Ss9VnGUPJVKIAR18zB05e8k",
+    stripePriceId: "prod_TtTC2BydzyWljD",
 
     downloadFile: "https://storage.dashkit.online/downloads/lookze-pro-v1.zip",
 
