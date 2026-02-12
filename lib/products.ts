@@ -51,7 +51,7 @@ Our Google Analytics 4 Report Template solves this instantly:
  
     `.trim(),
 
-    price: 100, // 249,00€
+    price: 25900, // 259,00€
     currency: "EUR",
 
     images: {
