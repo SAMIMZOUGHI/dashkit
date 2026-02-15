@@ -133,19 +133,25 @@ Our Google Analytics 4 Report Template solves this instantly:
 
     `.trim(),
 
-    price: 25900, // 259,00€
+    price: 100, // 259,00€
     currency: "EUR",
 
     images: {
-      thumbnail: "/images/products/ga4-ecommerce-report-template/thumbnail.png",
+      thumbnail: "https://ztlejgzielmkpusfrqpi.supabase.co/storage/v1/object/public/products/Google%20Analytics%204%20Ecommerce%20Report/DEMO_-_Google_Analytics_4_Ecommerce_Report_Template%20(2)_page-0001.jpg",
       gallery: [
-        "/images/products/admin-panel-nextjs/screenshot-1.png",
-        "/images/products/admin-panel-nextjs/screenshot-2.png",
-        "/images/products/admin-panel-nextjs/screenshot-3.png",
+    "https://ztlejgzielmkpusfrqpi.supabase.co/storage/v1/object/public/products/Google%20Analytics%204%20Ecommerce%20Report/DEMO_-_Google_Analytics_4_Ecommerce_Report_Template%20(2)_page-0001.jpg",
+    "https://ztlejgzielmkpusfrqpi.supabase.co/storage/v1/object/public/products/Google%20Analytics%204%20Ecommerce%20Report/DEMO_-_Google_Analytics_4_Ecommerce_Report_Template%20(2)_page-0002.jpg",
+    "https://ztlejgzielmkpusfrqpi.supabase.co/storage/v1/object/public/products/Google%20Analytics%204%20Ecommerce%20Report/DEMO_-_Google_Analytics_4_Ecommerce_Report_Template%20(2)_page-0003.jpg",
+    "https://ztlejgzielmkpusfrqpi.supabase.co/storage/v1/object/public/products/Google%20Analytics%204%20Ecommerce%20Report/DEMO_-_Google_Analytics_4_Ecommerce_Report_Template%20(2)_page-0005.jpg",
+    "https://ztlejgzielmkpusfrqpi.supabase.co/storage/v1/object/public/products/Google%20Analytics%204%20Ecommerce%20Report/DEMO_-_Google_Analytics_4_Ecommerce_Report_Template%20(2)_page-0007.jpg",
+    "https://ztlejgzielmkpusfrqpi.supabase.co/storage/v1/object/public/products/Google%20Analytics%204%20Ecommerce%20Report/DEMO_-_Google_Analytics_4_Ecommerce_Report_Template%20(2)_page-0008.jpg",
+    "https://ztlejgzielmkpusfrqpi.supabase.co/storage/v1/object/public/products/Google%20Analytics%204%20Ecommerce%20Report/DEMO_-_Google_Analytics_4_Ecommerce_Report_Template%20(2)_page-0009.jpg"
       ],
     },
 
     demoUrl: "https://demo.dashkit.online/admin-panel",
+
+    demoIframe: '<iframe width="600" height="338" src="https://lookerstudio.google.com/embed/reporting/d8f0ba10-7cba-4beb-840d-ce4c2ea83bef/page/6BShF" frameborder="0" style="border:0" allowfullscreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>',
 
     features: [
       "NextAuth authentification",
@@ -161,7 +167,7 @@ Our Google Analytics 4 Report Template solves this instantly:
     technologies: ["Next.js 14", "NextAuth", "Prisma", "Tailwind CSS", "Shadcn UI"],
 
     // ⚠️ À REMPLACER par ton vrai Price ID Stripe
-    stripePriceId: "price_XXXXXXXXXXXXXX",
+    stripePriceId: "prod_TyysZXyo382zug",
 
     downloadFile: "https://storage.dashkit.online/downloads/admin-panel-nextjs-v1.zip",
 
