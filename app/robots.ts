@@ -6,8 +6,7 @@
 
 import { MetadataRoute } from "next";
 
-// TODO: Remplacer par votre domaine de production
-const BASE_URL = "https://dashkit.fr";
+const BASE_URL = "https://dashkit.online";
 
 /**
  * Génère le fichier robots.txt pour contrôler l'indexation des moteurs de recherche

@@ -14,11 +14,10 @@ const inter = Inter({ subsets: ["latin"] });
 // =============================================================================
 // MÉTADONNÉES SEO - Configuration complète pour le référencement Google
 // =============================================================================
-// TODO: Remplacer "https://dashkit.fr" par votre vrai domaine de production
 
 export const metadata: Metadata = {
   // Base URL pour les métadonnées (à personnaliser avec votre domaine)
-  metadataBase: new URL("https://dashkit.fr"), // TODO: Remplacer par votre domaine réel
+  metadataBase: new URL("https://dashkit.online"),
 
   // Titre du site avec template pour les pages individuelles
   title: {
@@ -53,7 +52,7 @@ export const metadata: Metadata = {
     title: "DashKit - Templates Dashboard Premium",
     description:
       "Templates Next.js professionnels pour dashboards modernes. Solutions premium React, TypeScript, Tailwind CSS.",
-    url: "https://dashkit.fr", // TODO: Remplacer par votre domaine réel
+    url: "https://dashkit.online",
     siteName: "DashKit",
     locale: "fr_FR",
     type: "website",
@@ -87,7 +86,7 @@ export const metadata: Metadata = {
 
   // URL canonique
   alternates: {
-    canonical: "https://dashkit.fr", // TODO: Remplacer par votre domaine réel
+    canonical: "https://dashkit.online",
   },
 };
 
