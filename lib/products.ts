@@ -69,8 +69,8 @@ Our Google Analytics 4 Report Template solves this instantly:
 
     demoUrl: "https://lookerstudio.google.com/embed/reporting/8fdbdf91-0df4-4c54-a4e2-10c8c3935971/page/tEnnC",
 
-    demoIframe: '<iframe width="600" height="338" src="https://lookerstudio.google.com/embed/reporting/543a505c-2ab4-4ff4-a0e6-c50f374a8e4a/page/6BShF" frameborder="0" style="border:0" allowfullscreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>',
-
+    demoIframe: '<iframe width="600" height="338" src="https://lookerstudio.google.com/embed/reporting/7b2ea612-3f72-4dcb-a6a4-3560958b7449/page/6BShF" frameborder="0" style="border:0" allowfullscreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>',
+  
     features: [
       "One click setup",
       "Engagement metrics & analysis",
@@ -151,7 +151,7 @@ Our Google Analytics 4 Report Template solves this instantly:
 
     demoUrl: "https://demo.dashkit.online/admin-panel",
 
-    demoIframe: '<iframe width="600" height="338" src="https://lookerstudio.google.com/embed/reporting/d8f0ba10-7cba-4beb-840d-ce4c2ea83bef/page/6BShF" frameborder="0" style="border:0" allowfullscreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>',
+    demoIframe: '<iframe width="600" height="338" src="https://lookerstudio.google.com/embed/reporting/db16cc2b-501d-4a33-94d0-ac926199dbfd/page/6BShF" frameborder="0" style="border:0" allowfullscreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>',
 
     features: [
       "NextAuth authentification",
